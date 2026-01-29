@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings | OneKart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #0f172a;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .settings-container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            color: var(--dark);
+        }
+
+        .btn-save {
+            width: fit-content;
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <a href="#" class="logo"
+            style="margin-bottom:3rem; font-size:1.5rem; font-weight:800; text-decoration:none; background: linear-gradient(135deg, var(--white) 0%, var(--primary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">OneKart.</a>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="users" class="nav-item"><i class="fas fa-users"></i> Users</a>
+            <a href="seller-requests" class="nav-item"><i class="fas fa-user-clock"></i> Seller Requests</a>
+            <a href="products" class="nav-item"><i class="fas fa-box"></i> Products</a>
+            <a href="orders.html" class="nav-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+        <div style="padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div style="width: 100%; max-width: 800px; margin-bottom: 2rem;">
+            <h2 style="font-size: 1.8rem; color: var(--dark);">Account Settings</h2>
+            <p style="color: #64748b;">Manage your administrative account and security</p>
+        </div>
+
+        <div class="settings-container">
+            <div class="settings-card animate-fade">
+                <div class="card-header">
+                    <h3>Profile Information</h3>
+                </div>
+                <form id="profileForm">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Loading..." required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Loading..." required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-save">Update Profile</button>
+                </form>
+            </div>
+
+            <div class="settings-card animate-fade" style="animation-delay: 0.1s;">
+                <div class="card-header">
+                    <h3>Change Password</h3>
+                </div>
+                <form id="passwordForm">
+                    <div class="input-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-save">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle" style="color: var(--primary);"></i>
+        <span id="toastMsg">Changes saved</span>
+    </div>
+
+    <script>
+        const token = document.cookie.match(/(^| )token=([^;]+)/)?.[2];
+        if (!token) window.location.href = "../login";
+
+        const logout = () => {
+            document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            window.location.href = "../login";
+        };
+
+        const showToast = (msg, success = true) => {
+            const t = document.getElementById("toast");
+            const icon = t.querySelector("i");
+            document.getElementById("toastMsg").textContent = msg;
+            icon.className = success ? "fas fa-check-circle" : "fas fa-exclamation-circle";
+            icon.style.color = success ? "var(--primary)" : "var(--error)";
+            t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 3000);
+        };
+
+        async function loadProfile() {
+            try {
+                const res = await fetch("http://localhost/OneKart/onekart/api/getuser", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token })
+                });
+                const data = await res.json();
+                if (data.status === "success") {
+                    document.getElementById("name").value = data.user.name;
+                    document.getElementById("email").value = data.user.email;
+                }
+            } catch (err) {
+                showToast("Failed to load profile", false);
+            }
+        }
+
+        document.getElementById("profileForm").onsubmit = async (e) => {
+            e.preventDefault();
+            // Placeholder: Backend for profile update not yet implemented in API list
+            showToast("Profile update backend pending implementation");
+        };
+
+        document.getElementById("passwordForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById("newPassword").value;
+            const confPass = document.getElementById("confirmPassword").value;
+
+            if (newPass !== confPass) {
+                return showToast("Passwords do not match", false);
+            }
+            // Placeholder: Backend for password change
+            showToast("Password update backend pending implementation");
+        };
+
+        loadProfile();
+    </script>
+</body>
+
+</html>

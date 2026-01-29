@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product | Seller Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    html {
+      background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('../assets/img/auth-bg.png') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #000;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      background: transparent;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      width: 260px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .nav-item.active {
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .main-content {
+      margin-left: 260px;
+      flex-grow: 1;
+      padding: 4rem 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-card {
+      max-width: 650px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      padding: 3.5rem;
+      border-radius: 32px;
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 1s ease-out;
+      color: white;
+    }
+
+    .form-header {
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .form-header h2 {
+      font-size: 2.2rem;
+      color: white;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group label {
+      color: white;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .input-group input,
+    .input-group textarea {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: white !important;
+      border-radius: 16px !important;
+      padding: 1rem !important;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s;
+    }
+
+    .input-group input:focus,
+    .input-group textarea:focus {
+      border-color: #10b981 !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      outline: none;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar">
+    <a href="#" class="logo"
+      style="margin-bottom:3rem; font-size:1.5rem; font-weight:800; text-decoration:none; background: linear-gradient(135deg, var(--white) 0%, var(--primary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">OneKart.</a>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-pie"></i> Overview</a>
+      <a href="myproducts.html" class="nav-item"><i class="fas fa-box"></i> Inventory</a>
+      <a href="addproduct.html" class="nav-item active"><i class="fas fa-plus-circle"></i> Add Product</a>
+      <a href="orders.html" class="nav-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+      <a href="reviews.html" class="nav-item"><i class="fas fa-star"></i> Reviews</a>
+    </nav>
+    <div style="padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+      <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>List New Product</h2>
+        <p style="color: rgba(255,255,255,0.7);">Market your fresh produce to thousands of buyers</p>
+      </div>
+
+      <form id="addProductForm">
+        <div class="input-group">
+          <label for="name">Product Title</label>
+          <input type="text" id="name" placeholder="e.g. Organic Farm Tomatoes" required>
+        </div>
+
+        <div class="input-group">
+          <label for="description">Detailed Description</label>
+          <textarea id="description" placeholder="Describe your product freshness, origin, etc." rows="4"
+            required></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div class="input-group">
+            <label for="price">Price (₹)</label>
+            <input type="number" id="price" placeholder="0.00" step="0.01" min="0" required>
+          </div>
+          <div class="input-group">
+            <label for="quantity">Initial Stock</label>
+            <input type="number" id="quantity" placeholder="0" min="0" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="image_url">Product Image URL</label>
+          <input type="text" id="image_url" placeholder="https://images.unsplash.com/..." required>
+          <p style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.5rem;">Use a high-quality direct
+            image link.</p>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary"
+          style="width: 100%; margin-top: 2rem; padding: 1.2rem; border-radius: 18px; font-weight: 800; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+          List Product <i class="fas fa-check"></i>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle" style="color: var(--primary);"></i>
+    <span id="toastMsg">Product added successfully</span>
+  </div>
+
+  <script>
+    const token = document.cookie.match(/(^| )token=([^;]+)/)?.[2];
+    if (!token) window.location.href = "../login";
+
+    const logout = () => {
+      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      window.location.href = "../login";
+    };
+
+    const showToast = (msg, success = true) => {
+      const t = document.getElementById("toast");
+      const icon = t.querySelector("i");
+      document.getElementById("toastMsg").textContent = msg;
+      icon.className = success ? "fas fa-check-circle" : "fas fa-exclamation-circle";
+      icon.style.color = success ? "var(--primary)" : "var(--error)";
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    };
+
+    document.getElementById("addProductForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processing...';
+
+      const payload = {
+        token,
+        name: document.getElementById("name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        price: document.getElementById("price").value,
+        quantity: document.getElementById("quantity").value,
+        image_url: document.getElementById("image_url").value.trim()
+      };
+
+      try {
+        const res = await fetch("http://localhost/OneKart/onekart/api/products/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.status === "success") {
+          showToast("Product successfully listed!");
+          e.target.reset();
+        } else {
+          showToast(data.message || "Failed to list product", false);
+        }
+      } catch (err) {
+        showToast("Connection failed", false);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'List Product <i class="fas fa-check"></i>';
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+# System Directories
+node_modules/
+vendor/
+.DS_Store
+Thumbs.db
+
+# Config & Secrets (Optional - Uncomment if you want to keep creds out)
+# onekart/config/Database.php
+
+# Logs
+*.log
+debug_*.txt
+test_output.txt
+
+# Temporary/Backup Files
+*.bak
+*.tmp
+*.swp
+restore_result_utf8.txt
+verify.sql
+*.zip
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Environment Variables
+.env

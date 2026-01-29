@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | OneKart</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="index.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      background-color: #f8fafc;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2.5rem;
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 5%;
+    }
+
+    .checkout-main {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      color: var(--dark);
+    }
+
+    .section-header i {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .order-summary-card {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      height: fit-content;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .summary-total {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px dashed #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+
+    .payment-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">OneKart.</a>
+    <div class="nav-links">
+      <a href="./">Home</a>
+      <a href="myorders">My Orders</a>
+      <a href="track-order">Track Order</a>
+      <button onclick="logout()" class="btn btn-dark" style="padding: 0.5rem 1rem;">Logout</button>
+    </div>
+  </nav>
+
+  <main class="checkout-layout">
+    <div class="checkout-main">
+      <div class="section-header">
+        <i class="fas fa-truck"></i>
+        <div class="step-title">Delivery Details</div>
+      </div>
+
+      <div class="input-group">
+        <label for="address">Full Delivery Address</label>
+        <textarea id="address" placeholder="Room no, Building Name, Street, Landmark..." rows="3"
+          style="width:100%; padding:0.75rem 1rem; border:2px solid #e2e8f0; border-radius:12px; font-family:inherit;"></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="mobile">Contact Number</label>
+        <div style="position: relative;">
+          <span
+            style="position:absolute; left:1rem; top:50%; transform:translateY(-50%); font-weight:700; color:#64748b;">+91</span>
+          <input type="tel" id="mobile" placeholder="9876543210" style="padding-left:3.5rem;" maxlength="10">
+        </div>
+      </div>
+
+      <div style="margin-top: 3rem;">
+        <div class="section-header">
+          <i class="fas fa-credit-card"></i>
+          <div class="step-title">Payment Method</div>
+        </div>
+        <div
+          style="padding: 1.5rem; border: 2px solid var(--primary); background: var(--primary-light); border-radius: 16px; display: flex; align-items: center; gap: 1rem;">
+          <i class="fas fa-check-circle" style="color: var(--primary); font-size: 1.25rem;"></i>
+          <div>
+            <div style="font-weight: 800; color: var(--primary-dark);">Razorpay Secure</div>
+            <div style="font-size: 0.8rem; color: var(--primary-dark); opacity: 0.8;">Cards, UPI, Net Banking supported
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; margin-top: 3rem; padding: 1.25rem; font-size: 1.1rem;"
+        onclick="processPayment()">
+        Pay <span id="payBtnAmount">₹0.00</span> Now
+      </button>
+    </div>
+
+    <aside>
+      <div class="order-summary-card">
+        <h3 style="margin-bottom: 1.5rem;">Order Summary</h3>
+        <div id="summaryItems">
+          <!-- Dynamic -->
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="grandTotal">₹0.00</span>
+        </div>
+
+        <div class="payment-badge">
+          <i class="fas fa-lock"></i>
+          <span>256-bit SSL Secure Payment</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle" style="color: var(--primary);"></i>
+    <span id="toastMsg">Action successful</span>
+  </div>
+
+  <script>
+    const RAZORPAY_KEY = 'rzp_test_4lF84FAK3EkxMx';
+    const token = document.cookie.match(/(^| )token=([^;]+)/)?.[2];
+    let cartItems = [];
+    let totalAmount = 0;
+
+    if (!token) window.location.href = "login";
+
+    const logout = () => {
+      document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      window.location.href = "./";
+    };
+
+    const showToast = (msg, success = true) => {
+      const t = document.getElementById("toast");
+      const icon = t.querySelector("i");
+      document.getElementById("toastMsg").textContent = msg;
+      icon.className = success ? "fas fa-check-circle" : "fas fa-exclamation-circle";
+      icon.style.color = success ? "var(--primary)" : "var(--error)";
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    };
+
+    async function initCheckout() {
+      try {
+        const res = await fetch("http://localhost/OneKart/onekart/api/cart/view", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token })
+        });
+        const data = await res.json();
+
+        if (data.status === "success" && data.cart.length > 0) {
+          cartItems = data.cart;
+          totalAmount = data.total;
+
+          const container = document.getElementById("summaryItems");
+          container.innerHTML = "";
+          cartItems.forEach(item => {
+            container.innerHTML += `
+                            <div class="summary-item">
+                                <span>${item.name} × ${item.quantity}</span>
+                                <span>₹${parseFloat(item.subtotal).toFixed(2)}</span>
+                            </div>
+                        `;
+          });
+
+          const displayTotal = `₹${parseFloat(totalAmount).toFixed(2)}`;
+          document.getElementById("grandTotal").textContent = displayTotal;
+          document.getElementById("payBtnAmount").textContent = displayTotal;
+        } else {
+          window.location.href = "cart";
+        }
+      } catch (err) { showToast("Error connecting to server", false); }
+    }
+
+    async function processPayment() {
+      const addr = document.getElementById("address").value.trim();
+      const mob = document.getElementById("mobile").value.trim();
+
+      if (!addr || mob.length < 10) {
+        return showToast("Please provide valid delivery info", false);
+      }
+
+      try {
+        const res = await fetch("http://localhost/OneKart/onekart/api/createorder", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: totalAmount, token })
+        });
+        const orderData = await res.json();
+
+        if (!orderData.id) throw new Error("Order creation failed");
+
+        const options = {
+          key: RAZORPAY_KEY,
+          amount: orderData.amount,
+          currency: "INR",
+          name: "OneKart",
+          description: "Farm Fresh Produce",
+          order_id: orderData.id,
+          handler: async function (resp) {
+            showToast("Verifying payment...");
+            const placeRes = await fetch("http://localhost/OneKart/onekart/api/orders/place", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                token,
+                address: addr,
+                mobile: mob,
+                items: cartItems.map(i => ({ product_id: i.product_id, quantity: i.quantity })),
+                razorpay_payment_id: resp.razorpay_payment_id,
+                razorpay_order_id: resp.razorpay_order_id,
+                razorpay_signature: resp.razorpay_signature
+              })
+            });
+            const placeData = await placeRes.json();
+            if (placeData.status === "success") {
+              showToast("Order Placed Successfully!");
+              setTimeout(() => window.location.href = "myorders", 1500);
+            } else {
+              showToast("Payment confirmed, but order failed. Please contact support.", false);
+            }
+          },
+          prefill: { contact: mob },
+          theme: { color: "#10b981" }
+        };
+        new Razorpay(options).open();
+      } catch (err) { showToast("Payment gateway error", false); }
+    }
+
+    initCheckout();
+  </script>
+</body>
+
+</html>
