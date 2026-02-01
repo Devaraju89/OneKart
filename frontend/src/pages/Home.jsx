@@ -14,16 +14,16 @@ const Home = () => {
     const navigate = useNavigate();
 
     const heroImages = [
-        "https://images.unsplash.com/photo-1473973266408-ed4e27abdd47?q=80&w=2000", // Misty Field
-        "https://images.unsplash.com/photo-1495107333211-6ca9c24ad03c?q=80&w=2000", // Golden Harvest
-        "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2000", // Dusk Meadow
-        "https://images.unsplash.com/photo-1542332213-31f87348057f?q=80&w=2000", // Aerial Harvest
-        "https://images.unsplash.com/photo-1595147389795-37094173bfd8?q=80&w=2000", // Dark Vineyard
-        "https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?q=80&w=2000", // Deep Forest
-        "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2000", // Shaded Garden
-        "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?q=80&w=2000", // Blue Mountains
-        "https://images.unsplash.com/photo-1544911845-1f34a3eb46b1?q=80&w=2000", // Dark Soil
-        "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=2000"  // Herb Garden
+        "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000", // Fresh Harvest Basket
+        "https://images.unsplash.com/photo-1488459739032-d6f82311468e?q=80&w=2000", // Farmer's Market
+        "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=2000", // Organic Heirloom Tomatoes
+        "https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?q=80&w=2000", // Greenhouse Produce
+        "https://images.unsplash.com/photo-1610348725531-843dff563e2c?q=80&w=2000", // Fresh Fruit Collection
+        "https://images.unsplash.com/photo-1464960320293-d785f877e8a2?q=80&w=2000", // Seasonal Berries
+        "https://images.unsplash.com/photo-1550583724-125581fe2f8a?q=80&w=2000", // Dairy Farm Fresh
+        "https://images.unsplash.com/photo-1523348830342-d01f9ec9d23f?q=80&w=2000", // Vegetable Rows
+        "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?q=80&w=2000", // Gardening Mastery
+        "https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=2000"  // Liquid Gold Honey
     ];
 
     useEffect(() => {

@@ -37,10 +37,9 @@ const importData = async () => {
         await Admin.create(admins);
         const createdSellers = await Seller.create(sellers);
 
-        const farmerUser = createdSellers[0]._id;
-
         const sampleProducts = products.map((product) => {
-            return { ...product, seller: farmerUser };
+            const seller = createdSellers[product.sellerIndex || 0];
+            return { ...product, seller: seller._id };
         });
 
         await Product.create(sampleProducts);

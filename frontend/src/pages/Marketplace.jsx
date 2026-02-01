@@ -24,20 +24,20 @@ const Marketplace = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const slides = [
         {
-            img: "https://images.unsplash.com/photo-1523348830342-d01f9ec9d23f?q=80&w=2500",
-            quote: "The harvest is the reward of the patient soul."
+            img: "https://images.unsplash.com/photo-1488459739032-d6f82311468e?q=80&w=2500", // Market Stall
+            quote: "Directly from the estates that define excellence."
         },
         {
-            img: "https://images.unsplash.com/photo-1594488630128-44-6b0994fd747ef?q=80&w=2500",
-            quote: "Nature does not hurry, yet everything is accomplished."
+            img: "https://images.unsplash.com/photo-1595841696677-54897f28bc12?q=80&w=2500", // Fresh tools/produce
+            quote: "The right tools for a sustainable future."
         },
         {
-            img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2500",
-            quote: "What we plant in hope, we harvest in the sun of joy."
+            img: "https://images.unsplash.com/photo-1590779033100-9f60705a2f3b?q=80&w=2500", // Honey/Dairy
+            quote: "Purity you can taste in every single drop."
         },
         {
-            img: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2500",
-            quote: "Every harvest tells a story of growth and resilience."
+            img: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=2500", // Large field harvest
+            quote: "Rooted in tradition, harvested for the modern home."
         }
     ];
 
