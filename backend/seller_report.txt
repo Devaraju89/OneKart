@@ -1,5 +1,0 @@
---- OneKart Seller Accounts Report ---
-Total Seller Accounts: 3
-Active Estates: 3
-Pending Approval: 0
---------------------------------------
