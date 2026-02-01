@@ -89,7 +89,7 @@ const Marketplace = () => {
         }
     };
 
-    const fallbackImg = "https://images.pexels.com/photos/1458691/pexels-photo-1458691.jpeg?auto=compress&cs=tinysrgb&w=1000";
+    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000";
 
     return (
         <div style={{ background: 'var(--bg-main)', minHeight: '100vh' }}>

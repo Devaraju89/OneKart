@@ -132,7 +132,7 @@ const ProductDetails = () => {
 
     if (!product) return null;
 
-    const fallbackImg = "https://images.pexels.com/photos/1458691/pexels-photo-1458691.jpeg?auto=compress&cs=tinysrgb&w=1400";
+    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1400";
 
     return (
         <div style={{ background: 'var(--bg-main)', minHeight: '100vh', paddingBottom: '10rem', position: 'relative' }}>
