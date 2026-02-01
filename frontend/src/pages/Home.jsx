@@ -70,7 +70,7 @@ const Home = () => {
         }
     };
 
-    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800";
+    const fallbackImg = "https://images.pexels.com/photos/1458691/pexels-photo-1458691.jpeg?auto=compress&cs=tinysrgb&w=800";
 
     return (
         <div style={{ background: 'var(--bg-main)' }}>
@@ -209,7 +209,12 @@ const Home = () => {
                                         display: 'block',
                                         overflow: 'hidden'
                                     }}>
-                                        <img src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }} />
+                                        <img
+                                            src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
+                                            alt={p.name}
+                                            onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }}
+                                        />
                                     </Link>
                                     <div className="info" style={{ padding: '1.5rem' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>

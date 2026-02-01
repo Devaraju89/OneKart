@@ -132,7 +132,7 @@ const ProductDetails = () => {
 
     if (!product) return null;
 
-    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1400";
+    const fallbackImg = "https://images.pexels.com/photos/1458691/pexels-photo-1458691.jpeg?auto=compress&cs=tinysrgb&w=1400";
 
     return (
         <div style={{ background: 'var(--bg-main)', minHeight: '100vh', paddingBottom: '10rem', position: 'relative' }}>
@@ -172,6 +172,7 @@ const ProductDetails = () => {
                                 <img
                                     src={product.image_url !== 'no-image.jpg' ? product.image_url : fallbackImg}
                                     alt={product.name}
+                                    onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                             </div>
@@ -531,7 +532,12 @@ const ProductDetails = () => {
                                     transition: 'var(--transition)'
                                 }}>
                                     <div style={{ height: '240px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1.2rem' }}>
-                                        <img src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img
+                                            src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
+                                            alt={p.name}
+                                            onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
                                     </div>
                                     <h3 style={{ fontSize: '1.1rem', marginBottom: '0.6rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid #f1f5f9' }}>

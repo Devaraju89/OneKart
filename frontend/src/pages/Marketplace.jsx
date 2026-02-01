@@ -89,7 +89,7 @@ const Marketplace = () => {
         }
     };
 
-    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000";
+    const fallbackImg = "https://images.pexels.com/photos/1458691/pexels-photo-1458691.jpeg?auto=compress&cs=tinysrgb&w=1000";
 
     return (
         <div style={{ background: 'var(--bg-main)', minHeight: '100vh' }}>
@@ -302,6 +302,7 @@ const Marketplace = () => {
                                                     <img
                                                         src={p.image_url && p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
                                                         alt={p.name}
+                                                        onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                     />
                                                 </Link>

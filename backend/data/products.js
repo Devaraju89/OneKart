@@ -7,7 +7,7 @@ const products = [
         category: "Vegetables",
         quantity: 50,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/2325843/pexels-photo-2325843.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -17,7 +17,7 @@ const products = [
         category: "Vegetables",
         quantity: 100,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/533280/pexels-photo-533280.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -27,7 +27,7 @@ const products = [
         category: "Fruits",
         quantity: 80,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -37,7 +37,7 @@ const products = [
         category: "Fruits",
         quantity: 40,
         unit: "dozen",
-        image_url: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/2294477/pexels-photo-2294477.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -47,7 +47,7 @@ const products = [
         category: "Vegetables",
         quantity: 30,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1359326/pexels-photo-1359326.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -57,7 +57,7 @@ const products = [
         category: "Fruits",
         quantity: 60,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/65254/pomegranate-open-fruit-fruit-65254.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -67,7 +67,7 @@ const products = [
         category: "Vegetables",
         quantity: 45,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1590865101275-48362474c5bb?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/143133/pexels-photo-143133.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -77,7 +77,7 @@ const products = [
         category: "Vegetables",
         quantity: 200,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/928251/pexels-photo-928251.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -87,7 +87,7 @@ const products = [
         category: "Fruits",
         quantity: 75,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1537640538966-79f369bd41f5?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/708777/pexels-photo-708777.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
     {
@@ -97,7 +97,7 @@ const products = [
         category: "Vegetables",
         quantity: 35,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1506477331477-33d3d5792d47?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/2893635/pexels-photo-2893635.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 0
     },
 
@@ -109,7 +109,7 @@ const products = [
         category: "Seeds",
         quantity: 100,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1599148482840-d71701404c23?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/169523/pexels-photo-169523.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -119,7 +119,7 @@ const products = [
         category: "Seeds",
         quantity: 150,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1516246843873-9d12356b6fab?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1367192/pexels-photo-1367192.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -129,7 +129,7 @@ const products = [
         category: "Tools",
         quantity: 25,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1622383529357-3703c6b2adb4?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/36940/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -139,7 +139,7 @@ const products = [
         category: "Tools",
         quantity: 15,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1589133880922-ebb2584104be?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/2561213/pexels-photo-2561213.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -149,7 +149,7 @@ const products = [
         category: "Tools",
         quantity: 10,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/4505171/pexels-photo-4505171.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -159,7 +159,7 @@ const products = [
         category: "Seeds",
         quantity: 200,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1531165509930-1c0ca1571f54?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/2090900/pexels-photo-2090900.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -169,7 +169,7 @@ const products = [
         category: "Tools",
         quantity: 12,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1584483766114-2cea6facdf57?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1301856/pexels-photo-1301856.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -179,7 +179,7 @@ const products = [
         category: "Seeds",
         quantity: 120,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1327838/pexels-photo-1327838.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -189,7 +189,7 @@ const products = [
         category: "Seeds",
         quantity: 300,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1618376168163-967aa04677fd?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1087902/pexels-photo-1087902.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
     {
@@ -199,7 +199,7 @@ const products = [
         category: "Tools",
         quantity: 8,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1615485290382-441e4d0c9cb5?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/5945660/pexels-photo-5945660.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 1
     },
 
@@ -211,7 +211,7 @@ const products = [
         category: "Dairy",
         quantity: 100,
         unit: "liter",
-        image_url: "https://images.unsplash.com/photo-1550583724-125581fe2f8a?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -221,7 +221,7 @@ const products = [
         category: "Dairy",
         quantity: 50,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1563200782-4217316fc1b4?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -231,7 +231,7 @@ const products = [
         category: "Dairy",
         quantity: 40,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/4109911/pexels-photo-4109911.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -241,7 +241,7 @@ const products = [
         category: "Pantry",
         quantity: 30,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/3475653/pexels-photo-3475653.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -251,7 +251,7 @@ const products = [
         category: "Dairy",
         quantity: 40,
         unit: "dozen",
-        image_url: "https://images.unsplash.com/photo-1582722472200-d336a14e9f73?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/162712/egg-white-food-protein-162712.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -261,7 +261,7 @@ const products = [
         category: "Fruits",
         quantity: 25,
         unit: "box",
-        image_url: "https://images.unsplash.com/photo-1464960320293-d785f877e8a2?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/70737/pexels-photo-70737.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -271,7 +271,7 @@ const products = [
         category: "Dairy",
         quantity: 60,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1481931098730-11263884c592?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/139746/pexels-photo-139746.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -281,7 +281,7 @@ const products = [
         category: "Dairy",
         quantity: 45,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1573033527506-6f8e79c0903c?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/6309854/pexels-photo-6309854.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -291,7 +291,7 @@ const products = [
         category: "Tools",
         quantity: 20,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1594488630128-44-6b0994fd747ef?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/1105018/pexels-photo-1105018.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     },
     {
@@ -301,7 +301,7 @@ const products = [
         category: "Dairy",
         quantity: 35,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1589114934421-3d91943759ee?auto=format&fit=crop&q=80&w=800",
+        image_url: "https://images.pexels.com/photos/6310022/pexels-photo-6310022.jpeg?auto=compress&cs=tinysrgb&w=800",
         sellerIndex: 2
     }
 ];
