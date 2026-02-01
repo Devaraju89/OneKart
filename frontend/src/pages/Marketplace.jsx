@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import AuthContext from '../context/AuthContext';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, SlidersHorizontal, ArrowRight, Star, ChevronDown, LayoutGrid, List, User } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowRight, Star, ChevronDown, LayoutGrid, List, User, ShoppingBag } from 'lucide-react';
 
 const Marketplace = () => {
     const [products, setProducts] = useState([]);
@@ -72,8 +72,8 @@ const Marketplace = () => {
             const { data } = await axios.get(`/api/products?${params.toString()}`);
             let results = data.data || [];
 
-            // Shuffle results on refresh if no active search filters (Discovery Mode)
-            if (!keyword && category === 'All') {
+            // Shuffle results on refresh if no active search keyword and default/no sorting (Discovery Mode)
+            if (!keyword && (sort === 'newest' || !sort)) {
                 for (let i = results.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [results[i], results[j]] = [results[j], results[i]];
@@ -92,7 +92,7 @@ const Marketplace = () => {
     const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000";
 
     return (
-        <div style={{ background: 'var(--bg-main)', minHeight: '100vh' }}>
+        <div style={{ background: 'var(--bg-pure)', minHeight: '100vh' }}>
             {/* Cinematic Registry Header */}
             <section style={{
                 position: 'relative',
@@ -141,22 +141,21 @@ const Marketplace = () => {
                                 <div key={i} style={{ width: i === currentSlide ? '40px' : '10px', height: '3px', background: i === currentSlide ? 'var(--primary-light)' : 'rgba(255,255,255,0.3)', transition: 'var(--transition)' }} />
                             ))}
                         </div>
-
                     </div>
                 </div>
             </section>
 
             {/* Registry Grid & Filtering */}
-            <section style={{ padding: '8rem 0 12rem', background: 'var(--primary)', position: 'relative' }}>
+            <section style={{ padding: '8rem 0 12rem', background: 'rgba(255, 255, 255, 0.4)', backdropFilter: 'blur(30px)', borderTop: '1px solid rgba(22, 66, 60, 0.05)', position: 'relative' }}>
                 <div className="grain-overlay" style={{ opacity: 0.04 }} />
                 <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: showFilters ? '280px 1fr' : '1fr', gap: '4rem', transition: 'all 0.5s ease' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: showFilters ? '300px 1fr' : '1fr', gap: '4rem', transition: 'all 0.5s ease' }}>
 
                         {/* Registry Filters Sidebar */}
                         {showFilters && (
                             <aside className="reveal-up active" style={{ position: 'sticky', top: '120px', height: 'fit-content' }}>
-                                <div className="glass" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow)' }}>
-                                    <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Direct Search</h4>
+                                <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '32px' }}>
+                                    <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Direct Search</h4>
                                     <div style={{ position: 'relative' }}>
                                         <input
                                             type="text"
@@ -168,7 +167,7 @@ const Marketplace = () => {
                                                 width: '100%',
                                                 padding: '0.8rem 1rem',
                                                 borderRadius: '12px',
-                                                background: 'rgba(255,255,255,0.5)',
+                                                background: 'var(--bg-main)',
                                                 border: '1px solid var(--border)',
                                                 fontSize: '0.85rem',
                                                 outline: 'none'
@@ -178,7 +177,7 @@ const Marketplace = () => {
                                     </div>
 
                                     <div style={{ marginTop: '2.5rem' }}>
-                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Categories</h4>
+                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Categories</h4>
                                         <div style={{ display: 'grid', gap: '0.8rem' }}>
                                             {categories.map(cat => (
                                                 <button
@@ -206,7 +205,7 @@ const Marketplace = () => {
                                     </div>
 
                                     <div style={{ marginTop: '2.5rem' }}>
-                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Arrangement</h4>
+                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Arrangement</h4>
                                         <select
                                             value={sort}
                                             onChange={(e) => setSort(e.target.value)}
@@ -230,25 +229,25 @@ const Marketplace = () => {
                             </aside>
                         )}
 
-                        {/* Registry Grid */}
-                        <div>
+                        {/* Registry Grid Container */}
+                        <div style={{ width: '100%' }}>
                             {!loading && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                    <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+                                    <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                                         {products.length} Curated Entries
                                     </div>
-                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <div style={{ display: 'flex', gap: '0.8rem' }}>
                                         <button
                                             onClick={() => setShowFilters(!showFilters)}
                                             style={{
-                                                background: showFilters ? 'var(--accent)' : 'transparent',
-                                                color: showFilters ? 'var(--primary)' : 'var(--accent)',
-                                                border: '1px solid var(--accent)',
-                                                padding: '0.6rem 1rem',
-                                                borderRadius: '8px',
+                                                background: showFilters ? 'var(--primary)' : 'transparent',
+                                                color: showFilters ? 'white' : 'var(--primary)',
+                                                border: '1px solid var(--primary)',
+                                                padding: '0.6rem 1.2rem',
+                                                borderRadius: '100px',
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: '0.5rem',
+                                                gap: '0.6rem',
                                                 fontSize: '0.8rem',
                                                 fontWeight: '700',
                                                 cursor: 'pointer',
@@ -256,13 +255,16 @@ const Marketplace = () => {
                                                 textTransform: 'uppercase'
                                             }}
                                         >
-                                            <SlidersHorizontal size={16} /> Filters
+                                            <SlidersHorizontal size={16} /> {showFilters ? 'Hide' : 'Show'} Filters
                                         </button>
-                                        <button onClick={() => setViewMode('grid')} style={{ background: viewMode === 'grid' ? 'var(--accent)' : 'transparent', color: viewMode === 'grid' ? 'var(--primary)' : 'var(--accent)', border: '1px solid var(--accent)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><LayoutGrid size={18} /></button>
-                                        <button onClick={() => setViewMode('list')} style={{ background: viewMode === 'list' ? 'var(--accent)' : 'transparent', color: viewMode === 'list' ? 'var(--primary)' : 'var(--accent)', border: '1px solid var(--accent)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><List size={18} /></button>
+                                        <div style={{ display: 'flex', background: 'rgba(22, 66, 60, 0.05)', borderRadius: '100px', padding: '0.3rem' }}>
+                                            <button onClick={() => setViewMode('grid')} style={{ background: viewMode === 'grid' ? 'var(--primary)' : 'transparent', color: viewMode === 'grid' ? 'white' : 'var(--primary)', padding: '0.5rem 0.8rem', borderRadius: '100px', display: 'flex', cursor: 'pointer', transition: 'all 0.3s ease' }}><LayoutGrid size={18} /></button>
+                                            <button onClick={() => setViewMode('list')} style={{ background: viewMode === 'list' ? 'var(--primary)' : 'transparent', color: viewMode === 'list' ? 'white' : 'var(--primary)', padding: '0.5rem 0.8rem', borderRadius: '100px', display: 'flex', cursor: 'pointer', transition: 'all 0.3s ease' }}><List size={18} /></button>
+                                        </div>
                                     </div>
                                 </div>
                             )}
+
                             {loading ? (
                                 <div style={{ display: 'flex', justifyContent: 'center', padding: '10rem 0' }}><div className="loader"></div></div>
                             ) : (
@@ -276,30 +278,30 @@ const Marketplace = () => {
                                     ) : (
                                         <div className="product-grid" style={{
                                             display: 'grid',
-                                            gridTemplateColumns: viewMode === 'grid' ? (showFilters ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)') : '1fr',
-                                            gap: '2.5rem',
+                                            gridTemplateColumns: viewMode === 'grid' ? (showFilters ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)') : '1fr',
+                                            gap: '3rem',
                                             padding: 0,
-                                            transition: 'grid-template-columns 0.4s ease'
+                                            transition: 'grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                                         }}>
                                             {products.map((p, i) => (
-                                                <div key={p._id} className="product-card reveal-up active" style={{
+                                                <div key={p._id} className="glass-card reveal-up active" style={{
                                                     flexDirection: viewMode === 'grid' ? 'column' : 'row',
                                                     alignItems: 'stretch',
                                                     transitionDelay: `${(i % 3) * 0.1}s`,
-                                                    background: 'var(--bg-pure)',
-                                                    borderRadius: 'var(--radius-lg)',
-                                                    overflow: 'hidden',
-                                                    boxShadow: 'var(--shadow)',
-                                                    border: '1px solid rgba(22, 66, 60, 0.05)',
-                                                    transition: 'var(--transition)'
+                                                    height: '100%',
+                                                    display: 'flex',
+                                                    position: 'relative'
                                                 }}>
+                                                    <div className="grain-overlay" style={{ opacity: 0.02, position: 'absolute' }} />
+
                                                     <Link to={`/product/${p._id}`} className="img-box" style={{
-                                                        width: viewMode === 'grid' ? '100%' : '280px',
-                                                        height: viewMode === 'grid' ? '250px' : '280px',
-                                                        margin: 0,
+                                                        width: viewMode === 'grid' ? '100%' : '260px',
+                                                        height: viewMode === 'grid' ? '200px' : '180px',
+                                                        margin: viewMode === 'grid' ? '0.8rem' : '0',
                                                         display: 'block',
-                                                        background: '#f8faf6',
-                                                        overflow: 'hidden'
+                                                        background: 'rgba(0, 0, 0, 0.02)',
+                                                        overflow: 'hidden',
+                                                        borderRadius: viewMode === 'grid' ? '12px' : '0'
                                                     }}>
                                                         <img
                                                             src={p.image_url && p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
@@ -308,54 +310,93 @@ const Marketplace = () => {
                                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                         />
                                                     </Link>
+
                                                     <div className="info" style={{
-                                                        width: viewMode === 'grid' ? '100%' : 'calc(100% - 280px)',
-                                                        padding: '1.5rem',
+                                                        flex: 1,
+                                                        padding: '1rem 1.2rem',
                                                         display: 'flex',
-                                                        flexDirection: 'column'
+                                                        flexDirection: 'column',
+                                                        background: 'rgba(0, 0, 0, 0.01)',
+                                                        border: '1px solid rgba(0, 0, 0, 0.08)',
+                                                        borderRadius: '16px',
+                                                        margin: '0.8rem',
+                                                        marginTop: 0
                                                     }}>
-                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-                                                            <span className="cat" style={{ margin: 0, background: 'var(--accent)', color: 'var(--primary)', padding: '0.3rem 0.6rem', borderRadius: '100px', fontSize: '0.65rem', fontWeight: '800', textTransform: 'uppercase' }}>{p.category || 'ESTATE'}</span>
-                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--creamy)', padding: '0.3rem 0.6rem', borderRadius: '100px' }}>
-                                                                <Star size={14} fill="#fbbf24" color="#fbbf24" />
-                                                                <span style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--primary)' }}>{p.rating || '4.9'}</span>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.6rem' }}>
+                                                            <div>
+                                                                <span className="cat" style={{
+                                                                    margin: 0,
+                                                                    color: 'var(--primary-light)',
+                                                                    fontSize: '0.6rem',
+                                                                    fontWeight: '800',
+                                                                    textTransform: 'uppercase',
+                                                                    letterSpacing: '0.1em',
+                                                                    display: 'block',
+                                                                    marginBottom: '0.2rem'
+                                                                }}>{p.category || 'ESTATE'}</span>
+                                                                <Link to={`/product/${p._id}`}>
+                                                                    <h3 className="name" style={{
+                                                                        fontSize: '1.2rem',
+                                                                        margin: 0,
+                                                                        color: 'var(--primary)',
+                                                                        fontWeight: '800',
+                                                                        fontFamily: '"Playfair Display", serif',
+                                                                        letterSpacing: '-0.01em',
+                                                                        lineHeight: '1.2'
+                                                                    }}>{p.name}</h3>
+                                                                </Link>
+                                                            </div>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(251, 191, 36, 0.1)', padding: '0.3rem 0.6rem', borderRadius: '100px' }}>
+                                                                <Star size={10} fill="#fbbf24" color="#fbbf24" />
+                                                                <span style={{ fontSize: '0.75rem', fontWeight: '800', color: '#92400e' }}>{p.rating || '4.9'}</span>
                                                             </div>
                                                         </div>
-                                                        <Link to={`/product/${p._id}`}>
-                                                            <h3 className="name" style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
-                                                        </Link>
 
                                                         {/* Farmer Info */}
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem', opacity: 0.8 }}>
-                                                            <div style={{ width: '22px', height: '22px', background: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.8rem', opacity: 0.8 }}>
+                                                            <div style={{ width: '20px', height: '20px', background: 'var(--bg-main)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                                 <User size={10} color="var(--primary)" />
                                                             </div>
-                                                            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-body)' }}>
+                                                            <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-body)' }}>
                                                                 Farmer: <span style={{ color: 'var(--primary-light)' }}>{p.seller?.name || 'Estate Direct'}</span>
                                                             </span>
                                                         </div>
 
-                                                        <div className="bottom" style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(22, 66, 60, 0.05)' }}>
-                                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
-                                                                <span style={{ fontSize: '1.6rem', fontWeight: '900', color: 'var(--primary)' }}>₹{p.price}</span>
-                                                                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '700' }}>/ {p.unit || 'kg'}</span>
+                                                        <div className="bottom" style={{
+                                                            marginTop: 'auto',
+                                                            paddingTop: '0.8rem',
+                                                            borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <span style={{ fontSize: '0.55rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.1rem' }}>Price per {p.unit || 'kg'}</span>
+                                                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem' }}>
+                                                                    <span style={{ fontSize: '1.6rem', fontWeight: '900', color: 'var(--primary)', letterSpacing: '-0.02em' }}>₹{p.price}</span>
+                                                                </div>
                                                             </div>
                                                             {(!user || user.role === 'customer') && (
                                                                 <button
                                                                     onClick={() => addToCart(p)}
                                                                     disabled={p.quantity <= 0}
-                                                                    className="btn btn-primary"
+                                                                    className="btn-pill"
                                                                     style={{
-                                                                        padding: '0.75rem 1.5rem',
-                                                                        borderRadius: '100px',
-                                                                        boxShadow: '0 4px 12px rgba(22, 66, 60, 0.1)',
-                                                                        background: p.quantity <= 0 ? '#e2e8f0' : 'var(--primary)',
+                                                                        width: '44px',
+                                                                        height: '44px',
+                                                                        borderRadius: '50%',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'center',
+                                                                        background: p.quantity <= 0 ? '#f1f5f9' : 'var(--primary)',
                                                                         color: p.quantity <= 0 ? '#94a3b8' : 'white',
+                                                                        border: 'none',
                                                                         cursor: p.quantity <= 0 ? 'not-allowed' : 'pointer',
-                                                                        border: 'none'
+                                                                        boxShadow: p.quantity <= 0 ? 'none' : '0 10px 25px rgba(22, 66, 60, 0.2)',
+                                                                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                                                                     }}
                                                                 >
-                                                                    {p.quantity <= 0 ? 'Out of Stock' : 'Reserve'}
+                                                                    <ShoppingBag size={18} strokeWidth={2.5} />
                                                                 </button>
                                                             )}
                                                         </div>

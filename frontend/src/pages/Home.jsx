@@ -50,19 +50,14 @@ const Home = () => {
 
             let pool = [...data.data];
 
-            // Simple deterministic LCG-like pseudo-random shuffle
-            let seededRandom = (s) => {
-                let x = Math.sin(s++) * 10000;
-                return x - Math.floor(x);
-            };
-
+            // Truly random shuffle on every refresh for discovery
             for (let i = pool.length - 1; i > 0; i--) {
-                const j = Math.floor(seededRandom(seed + i) * (i + 1));
+                const j = Math.floor(Math.random() * (i + 1));
                 [pool[i], pool[j]] = [pool[j], pool[i]];
             }
 
-            // Slice to show a smaller 'Daily Batch' of 12 products (3 rows of 4)
-            setProducts(pool.slice(0, 12));
+            // Slice to show a curated 'Discovery Batch' of 6 products (2 rows of 3)
+            setProducts(pool.slice(0, 6));
         } catch (error) {
             console.error(error);
         } finally {
@@ -73,7 +68,7 @@ const Home = () => {
     const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800";
 
     return (
-        <div style={{ background: 'var(--bg-main)' }}>
+        <div style={{ background: 'var(--bg-pure)' }}>
             {/* Cinematic Dynamic Hero */}
             <section style={{
                 position: 'relative',
@@ -167,7 +162,7 @@ const Home = () => {
             </section>
 
             {/* Products Showcase */}
-            <section style={{ padding: '10rem 0', background: 'var(--primary)', position: 'relative', overflow: 'hidden' }}>
+            <section style={{ padding: '10rem 0', background: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(20px)', borderTop: '1px solid rgba(22, 66, 60, 0.05)', borderBottom: '1px solid rgba(22, 66, 60, 0.05)', position: 'relative', overflow: 'hidden' }}>
                 <div className="grain-overlay" style={{ opacity: 0.05 }} />
                 <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{
@@ -179,10 +174,10 @@ const Home = () => {
                         paddingBottom: '2.5rem'
                     }} className="reveal-up">
                         <div>
-                            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', fontFamily: "'Playfair Display', serif", letterSpacing: '-0.02em', color: 'var(--creamy)' }}>Seasonal Showcase</h2>
-                            <p style={{ color: 'var(--accent)', fontSize: '1.2rem', marginTop: '0.5rem', opacity: 0.9 }}>Reserve your share of this month's exceptional harvests.</p>
+                            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', fontFamily: "'Playfair Display', serif", letterSpacing: '-0.02em', color: 'var(--primary)' }}>Seasonal Showcase</h2>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '0.5rem', opacity: 0.9 }}>Reserve your share of this month's exceptional harvests.</p>
                         </div>
-                        <Link to="/marketplace" className="btn-outline" style={{ padding: '1rem 2.5rem', borderColor: 'var(--accent)', color: 'var(--accent)' }}>
+                        <Link to="/marketplace" className="btn-outline" style={{ padding: '1rem 2.5rem', borderColor: 'var(--primary)', color: 'var(--primary)' }}>
                             View Full Register <ArrowRight size={20} />
                         </Link>
                     </div>
@@ -192,23 +187,24 @@ const Home = () => {
                     ) : (
                         <div className="product-grid" style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(4, 1fr)',
-                            gap: '1.5rem'
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '2.5rem'
                         }}>
                             {products.map((p, i) => (
-                                <div key={p._id} className="product-card reveal-up active" style={{
-                                    background: 'var(--bg-pure)',
-                                    borderRadius: '24px',
-                                    overflow: 'hidden',
-                                    boxShadow: 'var(--shadow)',
-                                    transition: `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${0.05 * (i % 4)}s`,
-                                    animation: 'fadeIn 0.5s ease-out',
-                                    border: '1px solid rgba(22, 66, 60, 0.05)'
+                                <div key={p._id} className="glass-card reveal-up active" style={{
+                                    transitionDelay: `${(i % 3) * 0.1}s`,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%'
                                 }}>
                                     <Link to={`/product/${p._id}`} className="img-box" style={{
-                                        height: '320px',
+                                        height: '220px',
                                         display: 'block',
-                                        overflow: 'hidden'
+                                        overflow: 'hidden',
+                                        borderRadius: '12px',
+                                        margin: '0.8rem',
+                                        marginBottom: 0,
+                                        background: 'rgba(0, 0, 0, 0.02)'
                                     }}>
                                         <img
                                             src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
@@ -217,44 +213,71 @@ const Home = () => {
                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }}
                                         />
                                     </Link>
-                                    <div className="info" style={{ padding: '1.5rem' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                            <span className="cat" style={{ margin: 0, background: 'var(--accent)', color: 'var(--primary)', padding: '0.35rem 0.7rem', borderRadius: '100px', fontSize: '0.65rem', fontWeight: '800', textTransform: 'uppercase' }}>{p.category}</span>
-                                            <div style={{ display: 'flex', gap: '2px' }}>
-                                                {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} fill="var(--primary-light)" color="var(--primary-light)" />)}
+                                    <div className="info" style={{ padding: '0.8rem 1.2rem 1.5rem', background: 'transparent' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
+                                            <div>
+                                                <span className="cat" style={{
+                                                    margin: 0,
+                                                    color: 'var(--primary-light)',
+                                                    fontSize: '0.6rem',
+                                                    fontWeight: '800',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.15em',
+                                                    display: 'block',
+                                                    marginBottom: '0.2rem'
+                                                }}>{p.category}</span>
+                                                <Link to={`/product/${p._id}`}>
+                                                    <h3 className="name" style={{
+                                                        fontSize: '1.2rem',
+                                                        margin: 0,
+                                                        color: 'var(--primary)',
+                                                        fontWeight: '800',
+                                                        fontFamily: '"Playfair Display", serif',
+                                                        letterSpacing: '-0.01em',
+                                                        lineHeight: '1.2'
+                                                    }}>{p.name}</h3>
+                                                </Link>
+                                            </div>
+                                            <div style={{ display: 'flex', gap: '1px' }}>
+                                                {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} fill="#fbbf24" color="#fbbf24" />)}
                                             </div>
                                         </div>
-                                        <h3 className="name" style={{ fontSize: '1.4rem', marginBottom: '0.8rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
 
                                         <div style={{
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
-                                            paddingTop: '1.2rem',
-                                            borderTop: '1px solid rgba(22, 66, 60, 0.05)'
+                                            marginTop: '2rem',
+                                            paddingTop: '1.5rem',
+                                            borderTop: '1px solid #f8fafc'
                                         }}>
-                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
-                                                <span style={{ fontSize: '1.5rem', fontWeight: '900', color: 'var(--primary)' }}>₹{p.price}</span>
-                                                <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '700' }}>/{p.unit || 'kg'}</span>
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <span style={{ fontSize: '0.6rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>Price per {p.unit || 'kg'}</span>
+                                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.2rem' }}>
+                                                    <span style={{ fontSize: '1.8rem', fontWeight: '900', color: 'var(--primary)', letterSpacing: '-0.02em' }}>₹{p.price}</span>
+                                                </div>
                                             </div>
                                             {user?.role !== 'admin' && (
                                                 <button
                                                     onClick={() => addToCart(p)}
                                                     disabled={p.quantity <= 0}
-                                                    className="btn btn-primary"
+                                                    className="btn-pill"
                                                     style={{
-                                                        padding: '0.7rem 1.4rem',
-                                                        boxShadow: '0 4px 15px rgba(22, 66, 60, 0.1)',
-                                                        background: p.quantity <= 0 ? '#e2e8f0' : 'var(--primary)',
-                                                        color: p.quantity <= 0 ? '#94a3b8' : 'white',
-                                                        borderRadius: '100px',
-                                                        fontSize: '0.85rem',
+                                                        width: '52px',
+                                                        height: '52px',
                                                         display: 'flex',
                                                         alignItems: 'center',
-                                                        gap: '0.5rem'
+                                                        justifyContent: 'center',
+                                                        borderRadius: '50%',
+                                                        background: p.quantity <= 0 ? '#f1f5f9' : 'var(--primary)',
+                                                        color: p.quantity <= 0 ? '#94a3b8' : 'white',
+                                                        border: 'none',
+                                                        cursor: p.quantity <= 0 ? 'not-allowed' : 'pointer',
+                                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                        boxShadow: p.quantity <= 0 ? 'none' : '0 8px 20px rgba(22, 66, 60, 0.2)'
                                                     }}
                                                 >
-                                                    <ShoppingBag size={16} /> {p.quantity <= 0 ? 'Stock' : 'Reserve'}
+                                                    <ShoppingBag size={22} strokeWidth={2.5} />
                                                 </button>
                                             )}
                                         </div>
@@ -267,7 +290,7 @@ const Home = () => {
             </section>
 
             {/* Features Level Up */}
-            <section style={{ padding: '10rem 0 15rem', background: 'var(--bg-main)' }}>
+            <section style={{ padding: '10rem 0 15rem', background: 'var(--bg-pure)' }}>
                 <div className="container">
                     <div className="section-title reveal-up">
                         <span>Pillars of Excellence</span>
