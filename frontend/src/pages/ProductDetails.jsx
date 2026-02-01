@@ -512,93 +512,95 @@ const ProductDetails = () => {
 
                 {/* Related Explorations */}
                 {relatedProducts.length > 0 && (
-                    <div style={{ marginTop: '4rem', padding: '3rem 0', borderTop: '1px solid #f1f5f9' }}>
-                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                            <span style={{ fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.3em', color: 'var(--primary-light)', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem' }}>Registry Exploration</span>
-                            <h2 style={{ fontSize: '2.5rem' }}>Related Arrivals</h2>
-                        </div>
+                    <div style={{ marginTop: '8rem', padding: '10rem 0', background: 'var(--primary)', position: 'relative', width: '100vw', marginLeft: '50%', transform: 'translateX(-50%)' }}>
+                        <div className="grain-overlay" style={{ opacity: 0.05 }} />
+                        <div className="container" style={{ position: 'relative', zIndex: 1, padding: '0 2rem' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                                <span style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.4em', color: 'var(--accent)', textTransform: 'uppercase', display: 'block', marginBottom: '1.5rem' }}>Registry Exploration</span>
+                                <h2 style={{ fontSize: '3.5rem', fontFamily: '"Playfair Display", serif', color: 'var(--creamy)', letterSpacing: '-0.02em' }}>Related Arrivals</h2>
+                            </div>
 
-                        <div className="product-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-                            {relatedProducts.slice(0, 8).map(p => (
-                                <Link to={`/product/${p._id}`} key={p._id} className="product-card hero-fade-in" style={{
-                                    textDecoration: 'none',
-                                    padding: '1.2rem',
-                                    background: 'var(--bg-pure)',
-                                    borderRadius: '20px',
-                                    border: '1px solid rgba(22, 66, 60, 0.05)',
-                                    boxShadow: 'var(--shadow-sm)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    transition: 'var(--transition)'
-                                }}>
-                                    <div style={{ height: '240px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1.2rem' }}>
-                                        <img
-                                            src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
-                                            alt={p.name}
-                                            onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
-                                    </div>
-                                    <h3 style={{ fontSize: '1.1rem', marginBottom: '0.6rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid #f1f5f9' }}>
-                                        <div style={{ fontWeight: '900', fontSize: '1.2rem', color: 'var(--primary)' }}>₹{p.price}</div>
-                                        <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', background: 'var(--accent)', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>{p.category}</div>
-                                    </div>
-                                </Link>
-                            ))}
+                            <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+                                {relatedProducts.slice(0, 8).map(p => (
+                                    <Link to={`/product/${p._id}`} key={p._id} className="product-card hero-fade-in" style={{
+                                        textDecoration: 'none',
+                                        padding: '1.2rem',
+                                        background: 'var(--bg-pure)',
+                                        borderRadius: '20px',
+                                        border: '1px solid rgba(22, 66, 60, 0.05)',
+                                        boxShadow: 'var(--shadow-sm)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        transition: 'var(--transition)'
+                                    }}>
+                                        <div style={{ height: '240px', borderRadius: '12px', overflow: 'hidden', marginBottom: '1.2rem' }}>
+                                            <img
+                                                src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
+                                                alt={p.name}
+                                                onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        </div>
+                                        <h3 style={{ fontSize: '1.1rem', marginBottom: '0.6rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid #f1f5f9' }}>
+                                            <div style={{ fontWeight: '900', fontSize: '1.2rem', color: 'var(--primary)' }}>₹{p.price}</div>
+                                            <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '800', background: 'var(--accent)', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>{p.category}</div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {/* Message Modal */}
+                {showMessageModal && (
+                    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(22, 66, 60, 0.8)', backdropFilter: 'blur(10px)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div className="card hero-fade-in" style={{ width: '90%', maxWidth: '600px', padding: '3rem', background: 'white', borderRadius: '32px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+                                <div>
+                                    <span style={{ fontSize: '0.65rem', color: 'var(--primary-light)', fontWeight: '800', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Communication Protocol</span>
+                                    <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontFamily: '"Playfair Display", serif' }}>Inquiry for {product.name}</h2>
+                                </div>
+                                <button onClick={() => setShowMessageModal(false)} style={{ background: 'var(--bg-main)', border: 'none', padding: '0.8rem', borderRadius: '50%', cursor: 'pointer' }}>
+                                    <X size={20} color="var(--primary)" />
+                                </button>
+                            </div>
+
+                            <form onSubmit={sendMessage}>
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.1em', uppercase: 'true', marginBottom: '0.8rem' }}>Subject Reference</label>
+                                    <input
+                                        type="text"
+                                        value={msgSubject}
+                                        onChange={(e) => setMsgSubject(e.target.value)}
+                                        placeholder={`Inquiry: ${product.name}`}
+                                        style={{ width: '100%', padding: '1rem 1.5rem', borderRadius: '12px', border: '1px solid var(--border)', background: '#f8fafc', fontSize: '1rem', outline: 'none' }}
+                                    />
+                                </div>
+                                <div style={{ marginBottom: '2.5rem' }}>
+                                    <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.1em', uppercase: 'true', marginBottom: '0.8rem' }}>Draft Message</label>
+                                    <textarea
+                                        required
+                                        value={msgBody}
+                                        onChange={(e) => setMsgBody(e.target.value)}
+                                        placeholder="Compose your inquiry clearly for the estate owners..."
+                                        style={{ width: '100%', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid var(--border)', background: '#f8fafc', fontSize: '1rem', outline: 'none', minHeight: '150px' }}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={isSendingMsg}
+                                    className="btn btn-primary"
+                                    style={{ width: '100%', padding: '1.4rem', borderRadius: '16px', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.15em' }}
+                                >
+                                    {isSendingMsg ? 'Dispatching...' : 'Dispatch to Estate'}
+                                </button>
+                            </form>
                         </div>
                     </div>
                 )}
             </div>
-            {/* Message Modal */}
-            {showMessageModal && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(22, 66, 60, 0.8)', backdropFilter: 'blur(10px)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div className="card hero-fade-in" style={{ width: '90%', maxWidth: '600px', padding: '3rem', background: 'white', borderRadius: '32px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
-                            <div>
-                                <span style={{ fontSize: '0.65rem', color: 'var(--primary-light)', fontWeight: '800', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Communication Protocol</span>
-                                <h2 style={{ fontSize: '2rem', color: 'var(--primary)', fontFamily: '"Playfair Display", serif' }}>Inquiry for {product.name}</h2>
-                            </div>
-                            <button onClick={() => setShowMessageModal(false)} style={{ background: 'var(--bg-main)', border: 'none', padding: '0.8rem', borderRadius: '50%', cursor: 'pointer' }}>
-                                <X size={20} color="var(--primary)" />
-                            </button>
-                        </div>
-
-                        <form onSubmit={sendMessage}>
-                            <div style={{ marginBottom: '1.5rem' }}>
-                                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.1em', uppercase: 'true', marginBottom: '0.8rem' }}>Subject Reference</label>
-                                <input
-                                    type="text"
-                                    value={msgSubject}
-                                    onChange={(e) => setMsgSubject(e.target.value)}
-                                    placeholder={`Inquiry: ${product.name}`}
-                                    style={{ width: '100%', padding: '1rem 1.5rem', borderRadius: '12px', border: '1px solid var(--border)', background: '#f8fafc', fontSize: '1rem', outline: 'none' }}
-                                />
-                            </div>
-                            <div style={{ marginBottom: '2.5rem' }}>
-                                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: '800', letterSpacing: '0.1em', uppercase: 'true', marginBottom: '0.8rem' }}>Draft Message</label>
-                                <textarea
-                                    required
-                                    value={msgBody}
-                                    onChange={(e) => setMsgBody(e.target.value)}
-                                    placeholder="Compose your inquiry clearly for the estate owners..."
-                                    style={{ width: '100%', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid var(--border)', background: '#f8fafc', fontSize: '1rem', outline: 'none', minHeight: '150px' }}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={isSendingMsg}
-                                className="btn btn-primary"
-                                style={{ width: '100%', padding: '1.4rem', borderRadius: '16px', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.15em' }}
-                            >
-                                {isSendingMsg ? 'Dispatching...' : 'Dispatch to Estate'}
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
+            );
 };
 
-export default ProductDetails;
+            export default ProductDetails;

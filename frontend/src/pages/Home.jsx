@@ -167,21 +167,22 @@ const Home = () => {
             </section>
 
             {/* Products Showcase */}
-            <section style={{ padding: '0 0 10rem' }}>
-                <div className="container">
+            <section style={{ padding: '10rem 0', background: 'var(--primary)', position: 'relative', overflow: 'hidden' }}>
+                <div className="grain-overlay" style={{ opacity: 0.05 }} />
+                <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'flex-end',
                         marginBottom: '6rem',
-                        borderBottom: '1px solid var(--border)',
+                        borderBottom: '1px solid rgba(250, 250, 238, 0.1)',
                         paddingBottom: '2.5rem'
                     }} className="reveal-up">
                         <div>
-                            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', fontFamily: "'Playfair Display', serif", letterSpacing: '-0.02em' }}>Seasonal Showcase</h2>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '0.5rem' }}>Reserve your share of this month's exceptional harvests.</p>
+                            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', fontFamily: "'Playfair Display', serif", letterSpacing: '-0.02em', color: 'var(--creamy)' }}>Seasonal Showcase</h2>
+                            <p style={{ color: 'var(--accent)', fontSize: '1.2rem', marginTop: '0.5rem', opacity: 0.9 }}>Reserve your share of this month's exceptional harvests.</p>
                         </div>
-                        <Link to="/marketplace" className="btn-outline" style={{ padding: '1rem 2.5rem' }}>
+                        <Link to="/marketplace" className="btn-outline" style={{ padding: '1rem 2.5rem', borderColor: 'var(--accent)', color: 'var(--accent)' }}>
                             View Full Register <ArrowRight size={20} />
                         </Link>
                     </div>

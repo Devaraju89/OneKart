@@ -147,223 +147,226 @@ const Marketplace = () => {
             </section>
 
             {/* Registry Grid & Filtering */}
-            <section className="container" style={{ padding: '4rem 0 10rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: showFilters ? '240px 1fr' : '1fr', gap: '3rem', transition: 'all 0.5s ease' }}>
+            <section style={{ padding: '8rem 0 12rem', background: 'var(--primary)', position: 'relative' }}>
+                <div className="grain-overlay" style={{ opacity: 0.04 }} />
+                <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: showFilters ? '280px 1fr' : '1fr', gap: '4rem', transition: 'all 0.5s ease' }}>
 
-                    {/* Registry Filters Sidebar */}
-                    {showFilters && (
-                        <aside className="reveal-up active" style={{ position: 'sticky', top: '120px', height: 'fit-content' }}>
-                            <div className="glass" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow)' }}>
-                                <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Direct Search</h4>
-                                <div style={{ position: 'relative' }}>
-                                    <input
-                                        type="text"
-                                        placeholder="Search registry..."
-                                        value={keyword}
-                                        onChange={(e) => setKeyword(e.target.value)}
-                                        onKeyPress={(e) => e.key === 'Enter' && fetchProducts()}
-                                        style={{
-                                            width: '100%',
-                                            padding: '0.8rem 1rem',
-                                            borderRadius: '12px',
-                                            background: 'rgba(255,255,255,0.5)',
-                                            border: '1px solid var(--border)',
-                                            fontSize: '0.85rem',
-                                            outline: 'none'
-                                        }}
-                                    />
-                                    <Search size={16} color="var(--primary-light)" style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} onClick={fetchProducts} />
-                                </div>
+                        {/* Registry Filters Sidebar */}
+                        {showFilters && (
+                            <aside className="reveal-up active" style={{ position: 'sticky', top: '120px', height: 'fit-content' }}>
+                                <div className="glass" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow)' }}>
+                                    <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Direct Search</h4>
+                                    <div style={{ position: 'relative' }}>
+                                        <input
+                                            type="text"
+                                            placeholder="Search registry..."
+                                            value={keyword}
+                                            onChange={(e) => setKeyword(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && fetchProducts()}
+                                            style={{
+                                                width: '100%',
+                                                padding: '0.8rem 1rem',
+                                                borderRadius: '12px',
+                                                background: 'rgba(255,255,255,0.5)',
+                                                border: '1px solid var(--border)',
+                                                fontSize: '0.85rem',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                        <Search size={16} color="var(--primary-light)" style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} onClick={fetchProducts} />
+                                    </div>
 
-                                <div style={{ marginTop: '2.5rem' }}>
-                                    <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Categories</h4>
-                                    <div style={{ display: 'grid', gap: '0.8rem' }}>
-                                        {categories.map(cat => (
-                                            <button
-                                                key={cat}
-                                                onClick={() => setCategory(cat)}
-                                                style={{
-                                                    textAlign: 'left',
-                                                    background: 'transparent',
-                                                    border: 'none',
-                                                    fontSize: '0.9rem',
-                                                    fontWeight: category === cat ? '700' : '400',
-                                                    color: category === cat ? 'var(--primary)' : 'var(--text-muted)',
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                    transition: 'var(--transition)'
-                                                }}
-                                            >
-                                                {cat}
-                                                {category === cat && <div style={{ width: '5px', height: '5px', background: 'var(--primary-light)', borderRadius: '50%' }} />}
-                                            </button>
-                                        ))}
+                                    <div style={{ marginTop: '2.5rem' }}>
+                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1.2rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Categories</h4>
+                                        <div style={{ display: 'grid', gap: '0.8rem' }}>
+                                            {categories.map(cat => (
+                                                <button
+                                                    key={cat}
+                                                    onClick={() => setCategory(cat)}
+                                                    style={{
+                                                        textAlign: 'left',
+                                                        background: 'transparent',
+                                                        border: 'none',
+                                                        fontSize: '0.9rem',
+                                                        fontWeight: category === cat ? '800' : '400',
+                                                        color: category === cat ? 'var(--primary-light)' : 'var(--text-muted)',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        transition: 'var(--transition)'
+                                                    }}
+                                                >
+                                                    {cat}
+                                                    {category === cat && <div style={{ width: '6px', height: '6px', background: 'var(--primary-light)', borderRadius: '50%', boxShadow: '0 0 10px var(--primary-light)' }} />}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div style={{ marginTop: '2.5rem' }}>
+                                        <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1rem', color: 'var(--creamy)', textTransform: 'uppercase' }}>Arrangement</h4>
+                                        <select
+                                            value={sort}
+                                            onChange={(e) => setSort(e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                padding: '0.7rem',
+                                                borderRadius: '12px',
+                                                background: 'white',
+                                                border: '1px solid var(--border)',
+                                                fontSize: '0.85rem',
+                                                outline: 'none'
+                                            }}
+                                        >
+                                            <option value="newest">Latest Release</option>
+                                            <option value="price_asc">Price: Ascending</option>
+                                            <option value="price_desc">Price: Descending</option>
+                                            <option value="rating">Registry Rating</option>
+                                        </select>
                                     </div>
                                 </div>
-
-                                <div style={{ marginTop: '2.5rem' }}>
-                                    <h4 style={{ fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.15em', marginBottom: '1rem', color: 'var(--primary)', textTransform: 'uppercase' }}>Arrangement</h4>
-                                    <select
-                                        value={sort}
-                                        onChange={(e) => setSort(e.target.value)}
-                                        style={{
-                                            width: '100%',
-                                            padding: '0.7rem',
-                                            borderRadius: '12px',
-                                            background: 'white',
-                                            border: '1px solid var(--border)',
-                                            fontSize: '0.85rem',
-                                            outline: 'none'
-                                        }}
-                                    >
-                                        <option value="newest">Latest Release</option>
-                                        <option value="price_asc">Price: Ascending</option>
-                                        <option value="price_desc">Price: Descending</option>
-                                        <option value="rating">Registry Rating</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </aside>
-                    )}
-
-                    {/* Registry Grid */}
-                    <div>
-                        {!loading && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                    {products.length} Curated Entries
-                                </div>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <button
-                                        onClick={() => setShowFilters(!showFilters)}
-                                        style={{
-                                            background: showFilters ? 'var(--primary)' : 'transparent',
-                                            color: showFilters ? 'white' : 'var(--primary)',
-                                            border: '1px solid var(--primary)',
-                                            padding: '0.6rem 1rem',
-                                            borderRadius: '8px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            fontSize: '0.8rem',
-                                            fontWeight: '700',
-                                            cursor: 'pointer',
-                                            transition: 'var(--transition)',
-                                            textTransform: 'uppercase'
-                                        }}
-                                    >
-                                        <SlidersHorizontal size={16} /> Filters
-                                    </button>
-                                    <button onClick={() => setViewMode('grid')} style={{ background: viewMode === 'grid' ? 'var(--primary)' : 'transparent', color: viewMode === 'grid' ? 'white' : 'var(--primary)', border: '1px solid var(--primary)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><LayoutGrid size={18} /></button>
-                                    <button onClick={() => setViewMode('list')} style={{ background: viewMode === 'list' ? 'var(--primary)' : 'transparent', color: viewMode === 'list' ? 'white' : 'var(--primary)', border: '1px solid var(--primary)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><List size={18} /></button>
-                                </div>
-                            </div>
+                            </aside>
                         )}
-                        {loading ? (
-                            <div style={{ display: 'flex', justifyContent: 'center', padding: '10rem 0' }}><div className="loader"></div></div>
-                        ) : (
-                            <>
-                                {products.length === 0 ? (
-                                    <div className="reveal active" style={{ padding: '8rem 2rem', textAlign: 'center', background: 'var(--bg-pure)', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border)' }}>
-                                        <h2 style={{ fontSize: '2rem', fontFamily: '"Playfair Display", serif', marginBottom: '1rem' }}>No Matches Found</h2>
-                                        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Refine your search parameters.</p>
-                                        <button onClick={() => { setCategory('All'); setKeyword(''); fetchProducts(); }} className="btn btn-primary">Reset Registry</button>
+
+                        {/* Registry Grid */}
+                        <div>
+                            {!loading && (
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                                    <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                        {products.length} Curated Entries
                                     </div>
-                                ) : (
-                                    <div className="product-grid" style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: viewMode === 'grid' ? (showFilters ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)') : '1fr',
-                                        gap: '2.5rem',
-                                        padding: 0,
-                                        transition: 'grid-template-columns 0.4s ease'
-                                    }}>
-                                        {products.map((p, i) => (
-                                            <div key={p._id} className="product-card reveal-up active" style={{
-                                                flexDirection: viewMode === 'grid' ? 'column' : 'row',
-                                                alignItems: 'stretch',
-                                                transitionDelay: `${(i % 3) * 0.1}s`,
-                                                background: 'var(--bg-pure)',
-                                                borderRadius: 'var(--radius-lg)',
-                                                overflow: 'hidden',
-                                                boxShadow: 'var(--shadow)',
-                                                border: '1px solid rgba(22, 66, 60, 0.05)',
-                                                transition: 'var(--transition)'
-                                            }}>
-                                                <Link to={`/product/${p._id}`} className="img-box" style={{
-                                                    width: viewMode === 'grid' ? '100%' : '280px',
-                                                    height: viewMode === 'grid' ? '250px' : '280px',
-                                                    margin: 0,
-                                                    display: 'block',
-                                                    background: '#f8faf6',
-                                                    overflow: 'hidden'
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <button
+                                            onClick={() => setShowFilters(!showFilters)}
+                                            style={{
+                                                background: showFilters ? 'var(--accent)' : 'transparent',
+                                                color: showFilters ? 'var(--primary)' : 'var(--accent)',
+                                                border: '1px solid var(--accent)',
+                                                padding: '0.6rem 1rem',
+                                                borderRadius: '8px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '0.5rem',
+                                                fontSize: '0.8rem',
+                                                fontWeight: '700',
+                                                cursor: 'pointer',
+                                                transition: 'var(--transition)',
+                                                textTransform: 'uppercase'
+                                            }}
+                                        >
+                                            <SlidersHorizontal size={16} /> Filters
+                                        </button>
+                                        <button onClick={() => setViewMode('grid')} style={{ background: viewMode === 'grid' ? 'var(--accent)' : 'transparent', color: viewMode === 'grid' ? 'var(--primary)' : 'var(--accent)', border: '1px solid var(--accent)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><LayoutGrid size={18} /></button>
+                                        <button onClick={() => setViewMode('list')} style={{ background: viewMode === 'list' ? 'var(--accent)' : 'transparent', color: viewMode === 'list' ? 'var(--primary)' : 'var(--accent)', border: '1px solid var(--accent)', padding: '0.6rem', borderRadius: '8px', display: 'flex', cursor: 'pointer', transition: 'var(--transition)' }}><List size={18} /></button>
+                                    </div>
+                                </div>
+                            )}
+                            {loading ? (
+                                <div style={{ display: 'flex', justifyContent: 'center', padding: '10rem 0' }}><div className="loader"></div></div>
+                            ) : (
+                                <>
+                                    {products.length === 0 ? (
+                                        <div className="reveal active" style={{ padding: '8rem 2rem', textAlign: 'center', background: 'var(--bg-pure)', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border)' }}>
+                                            <h2 style={{ fontSize: '2rem', fontFamily: '"Playfair Display", serif', marginBottom: '1rem' }}>No Matches Found</h2>
+                                            <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Refine your search parameters.</p>
+                                            <button onClick={() => { setCategory('All'); setKeyword(''); fetchProducts(); }} className="btn btn-primary">Reset Registry</button>
+                                        </div>
+                                    ) : (
+                                        <div className="product-grid" style={{
+                                            display: 'grid',
+                                            gridTemplateColumns: viewMode === 'grid' ? (showFilters ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)') : '1fr',
+                                            gap: '2.5rem',
+                                            padding: 0,
+                                            transition: 'grid-template-columns 0.4s ease'
+                                        }}>
+                                            {products.map((p, i) => (
+                                                <div key={p._id} className="product-card reveal-up active" style={{
+                                                    flexDirection: viewMode === 'grid' ? 'column' : 'row',
+                                                    alignItems: 'stretch',
+                                                    transitionDelay: `${(i % 3) * 0.1}s`,
+                                                    background: 'var(--bg-pure)',
+                                                    borderRadius: 'var(--radius-lg)',
+                                                    overflow: 'hidden',
+                                                    boxShadow: 'var(--shadow)',
+                                                    border: '1px solid rgba(22, 66, 60, 0.05)',
+                                                    transition: 'var(--transition)'
                                                 }}>
-                                                    <img
-                                                        src={p.image_url && p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
-                                                        alt={p.name}
-                                                        onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
-                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                    />
-                                                </Link>
-                                                <div className="info" style={{
-                                                    width: viewMode === 'grid' ? '100%' : 'calc(100% - 280px)',
-                                                    padding: '1.5rem',
-                                                    display: 'flex',
-                                                    flexDirection: 'column'
-                                                }}>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
-                                                        <span className="cat" style={{ margin: 0, background: 'var(--accent)', color: 'var(--primary)', padding: '0.3rem 0.6rem', borderRadius: '100px', fontSize: '0.65rem', fontWeight: '800', textTransform: 'uppercase' }}>{p.category || 'ESTATE'}</span>
-                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--creamy)', padding: '0.3rem 0.6rem', borderRadius: '100px' }}>
-                                                            <Star size={14} fill="#fbbf24" color="#fbbf24" />
-                                                            <span style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--primary)' }}>{p.rating || '4.9'}</span>
-                                                        </div>
-                                                    </div>
-                                                    <Link to={`/product/${p._id}`}>
-                                                        <h3 className="name" style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
+                                                    <Link to={`/product/${p._id}`} className="img-box" style={{
+                                                        width: viewMode === 'grid' ? '100%' : '280px',
+                                                        height: viewMode === 'grid' ? '250px' : '280px',
+                                                        margin: 0,
+                                                        display: 'block',
+                                                        background: '#f8faf6',
+                                                        overflow: 'hidden'
+                                                    }}>
+                                                        <img
+                                                            src={p.image_url && p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
+                                                            alt={p.name}
+                                                            onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                        />
                                                     </Link>
-
-                                                    {/* Farmer Info */}
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem', opacity: 0.8 }}>
-                                                        <div style={{ width: '22px', height: '22px', background: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                            <User size={10} color="var(--primary)" />
+                                                    <div className="info" style={{
+                                                        width: viewMode === 'grid' ? '100%' : 'calc(100% - 280px)',
+                                                        padding: '1.5rem',
+                                                        display: 'flex',
+                                                        flexDirection: 'column'
+                                                    }}>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem' }}>
+                                                            <span className="cat" style={{ margin: 0, background: 'var(--accent)', color: 'var(--primary)', padding: '0.3rem 0.6rem', borderRadius: '100px', fontSize: '0.65rem', fontWeight: '800', textTransform: 'uppercase' }}>{p.category || 'ESTATE'}</span>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--creamy)', padding: '0.3rem 0.6rem', borderRadius: '100px' }}>
+                                                                <Star size={14} fill="#fbbf24" color="#fbbf24" />
+                                                                <span style={{ fontSize: '0.85rem', fontWeight: '800', color: 'var(--primary)' }}>{p.rating || '4.9'}</span>
+                                                            </div>
                                                         </div>
-                                                        <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-body)' }}>
-                                                            Farmer: <span style={{ color: 'var(--primary-light)' }}>{p.seller?.name || 'Estate Direct'}</span>
-                                                        </span>
-                                                    </div>
+                                                        <Link to={`/product/${p._id}`}>
+                                                            <h3 className="name" style={{ fontSize: '1.4rem', marginBottom: '0.5rem', color: 'var(--primary)', fontWeight: '800' }}>{p.name}</h3>
+                                                        </Link>
 
-                                                    <div className="bottom" style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(22, 66, 60, 0.05)' }}>
-                                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
-                                                            <span style={{ fontSize: '1.6rem', fontWeight: '900', color: 'var(--primary)' }}>₹{p.price}</span>
-                                                            <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '700' }}>/ {p.unit || 'kg'}</span>
+                                                        {/* Farmer Info */}
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem', opacity: 0.8 }}>
+                                                            <div style={{ width: '22px', height: '22px', background: 'var(--accent)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                                <User size={10} color="var(--primary)" />
+                                                            </div>
+                                                            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-body)' }}>
+                                                                Farmer: <span style={{ color: 'var(--primary-light)' }}>{p.seller?.name || 'Estate Direct'}</span>
+                                                            </span>
                                                         </div>
-                                                        {(!user || user.role === 'customer') && (
-                                                            <button
-                                                                onClick={() => addToCart(p)}
-                                                                disabled={p.quantity <= 0}
-                                                                className="btn btn-primary"
-                                                                style={{
-                                                                    padding: '0.75rem 1.5rem',
-                                                                    borderRadius: '100px',
-                                                                    boxShadow: '0 4px 12px rgba(22, 66, 60, 0.1)',
-                                                                    background: p.quantity <= 0 ? '#e2e8f0' : 'var(--primary)',
-                                                                    color: p.quantity <= 0 ? '#94a3b8' : 'white',
-                                                                    cursor: p.quantity <= 0 ? 'not-allowed' : 'pointer',
-                                                                    border: 'none'
-                                                                }}
-                                                            >
-                                                                {p.quantity <= 0 ? 'Out of Stock' : 'Reserve'}
-                                                            </button>
-                                                        )}
+
+                                                        <div className="bottom" style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid rgba(22, 66, 60, 0.05)' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.3rem' }}>
+                                                                <span style={{ fontSize: '1.6rem', fontWeight: '900', color: 'var(--primary)' }}>₹{p.price}</span>
+                                                                <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '700' }}>/ {p.unit || 'kg'}</span>
+                                                            </div>
+                                                            {(!user || user.role === 'customer') && (
+                                                                <button
+                                                                    onClick={() => addToCart(p)}
+                                                                    disabled={p.quantity <= 0}
+                                                                    className="btn btn-primary"
+                                                                    style={{
+                                                                        padding: '0.75rem 1.5rem',
+                                                                        borderRadius: '100px',
+                                                                        boxShadow: '0 4px 12px rgba(22, 66, 60, 0.1)',
+                                                                        background: p.quantity <= 0 ? '#e2e8f0' : 'var(--primary)',
+                                                                        color: p.quantity <= 0 ? '#94a3b8' : 'white',
+                                                                        cursor: p.quantity <= 0 ? 'not-allowed' : 'pointer',
+                                                                        border: 'none'
+                                                                    }}
+                                                                >
+                                                                    {p.quantity <= 0 ? 'Out of Stock' : 'Reserve'}
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </>
-                        )}
+                                            ))}
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
