@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "697da5b8a737d2b57a0458d1",
+    "name": "Ramesh Farmer",
+    "email": "farmer@onekart.com",
+    "password": "$2a$10$LYpVNnMELz1WVyAkxD/NqueI8jqgGnAvXBgCuTKkbmj742gtrIquu",
+    "role": "farmer",
+    "mobile": "9876543210",
+    "status": "active",
+    "createdAt": "2026-01-31T06:48:24.336Z",
+    "__v": 0
+  },
+  {
+    "_id": "697da884e806e3a7cee08f0b",
+    "name": "Rang",
+    "email": "rang@gmail.com",
+    "password": "$2a$10$VbhO/Lgvx/mWOrE2k63kL.QTZ5nPXiX/8VoGCBROFS7bgiilkLsiG",
+    "role": "farmer",
+    "mobile": "0949336400",
+    "status": "pending",
+    "createdAt": "2026-01-31T07:00:20.665Z",
+    "__v": 0
+  },
+  {
+    "_id": "697dab4f7fe8137381770ccf",
+    "name": "Green Valley Farms",
+    "email": "farmer@test.com",
+    "password": "$2a$10$pjkT2iPkbGwnCM7npO0oW.YmDaTIE5ehGd/.TRpxV/U6f2JEQDgK2",
+    "role": "farmer",
+    "status": "active",
+    "createdAt": "2026-01-31T07:12:15.101Z",
+    "__v": 0
+  }
+]

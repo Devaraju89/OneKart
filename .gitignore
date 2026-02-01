@@ -4,11 +4,16 @@ vendor/
 .DS_Store
 Thumbs.db
 
-# Config & Secrets (Optional - Uncomment if you want to keep creds out)
-# onekart/config/Database.php
+# Build Directories
+dist/
+build/
+out/
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 debug_*.txt
 test_output.txt
 
@@ -26,3 +31,7 @@ verify.sql
 
 # Environment Variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

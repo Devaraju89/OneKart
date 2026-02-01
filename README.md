@@ -1,26 +1,53 @@
-# OneKart - Organic Marketplace
+# OneKart - MERN Stack Migration
 
-OneKart is a full-stack e-commerce platform connecting farmers with customers.
+This project has been migrated from PHP to the MERN stack (MongoDB, Express, React, Node.js).
 
-## 🚀 Running Locally (Developer Mode)
-1. Ensure **XAMPP** (Apache & MySQL) is running.
-2. Open terminal in `onekart-frontend/`.
-3. Run `npm start`.
-4. App opens at `http://localhost:3000`.
+## Project Structure
 
-## 🌍 Deployment Guide (Free Hosting)
-Since this is a **PHP + MySQL** application, the best free deployment option is **InfinityFree** or **000webhost**.
+- **backend/**: Node.js/Express API
+  - `server.js`: Main entry point
+  - `models/`: Mongoose models (User, Product, Order)
+  - `routes/`: API routes (Auth, Products, Orders)
+  - `.env`: Environment variables
+- **frontend/**: React + Vite application
+  - `src/pages/`: React components for pages
+  - `src/context/`: State management (Auth)
+  - `vite.config.js`: Configuration with API proxy
+- **php_legacy/**: Archived PHP version of the project
 
-### 1. Database Setup (Production)
-1. Create a MySQL database on your hosting panel.
-2. Import `database/onekart_schema.sql` via phpMyAdmin.
-3. Edit `onekart/config/Database.php` with your **new hosting credentials** (Host, DB Name, User, Password).
+## Prerequisites
 
-### 2. File Upload
-1. Upload the **entire** contents of the `OneKart` folder to the `public_html` or `htdocs` folder on your host.
-2. **Note**: On the server, you do **not** run `npm start`. The built-in PHP router (`index.php`) will handle everything automatically.
+1.  **Node.js**: Ensure Node.js is installed.
+2.  **MongoDB**: Ensure MongoDB is running locally on port `27017` or update `backend/.env`.
 
-## 📁 Project Structure
-- **/onekart**: Backend APIs (PHP)
-- **/onekart-frontend**: Frontend UI (HTML/JS)
-- **/database**: SQL Schema
+## How to Run
+
+### 1. Start the Backend
+
+Open a terminal in the `backend` folder:
+
+```bash
+cd backend
+npm install   # Install dependencies (only needed once)
+npm run dev   # Start the server with Nodemon
+```
+
+ The server will start on `http://localhost:5000`.
+
+### 2. Start the Frontend
+
+Open a new terminal in the `frontend` folder:
+
+```bash
+cd frontend
+npm install   # Install dependencies (only needed once)
+npm run dev   # Start the React development server
+```
+
+Access the application at the URL provided (usually `http://localhost:5173`).
+
+## Features Ported
+
+-   **User Authentication**: Register (Customer/Farmer) and Login.
+-   **Product Listing**: Homepage displays products from the database.
+-   **Data Models**: Structured schemas for Users, Products, and Orders.
