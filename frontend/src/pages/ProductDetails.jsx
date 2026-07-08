@@ -132,13 +132,22 @@ const ProductDetails = () => {
 
     if (!product) return null;
 
-    const fallbackImg = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1400";
+    const fallbackImg = "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=1400";
+
+    const formatImageUrl = (url) => {
+        if (!url || url === 'no-image.jpg') return fallbackImg;
+        let formatted = url.replace(/\\/g, '/');
+        if (!formatted.startsWith('http') && !formatted.startsWith('/')) {
+            formatted = '/' + formatted;
+        }
+        return formatted;
+    };
 
     return (
-        <div style={{ background: 'var(--bg-pure)', minHeight: '100vh', paddingBottom: '10rem', position: 'relative' }}>
+        <div style={{ background: 'var(--bg-pure)', minHeight: '100vh', paddingTop: '120px', paddingBottom: '10rem', position: 'relative' }}>
             <div className="grain-overlay" style={{ opacity: 0.015 }} />
             {/* 1. EDITORIAL HEADER */}
-            <div className="container" style={{ paddingTop: '6rem', paddingBottom: '2rem' }}>
+            <div className="container" style={{ paddingTop: '0', paddingBottom: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.15rem', color: 'var(--text-muted)' }}>
                         <Link to="/marketplace" style={{ color: 'var(--text-muted)', transition: 'color 0.3s' }}>ARCHIVE</Link>
@@ -162,7 +171,7 @@ const ProductDetails = () => {
             </div>
 
             <div className="container" style={{ paddingBottom: '4rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '5rem', alignItems: 'start' }}>
+                <div className="product-details-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '5rem', alignItems: 'start' }}>
 
                     {/* Media Focus */}
                     <div className="hero-fade-in">
@@ -170,7 +179,7 @@ const ProductDetails = () => {
                             <div className="grain-overlay" style={{ opacity: 0.03, backgroundSize: '100px' }} />
                             <div style={{ width: '100%', aspectRatio: '1/1', overflow: 'hidden', borderRadius: '20px', position: 'relative', zIndex: 1 }}>
                                 <img
-                                    src={product.image_url !== 'no-image.jpg' ? product.image_url : fallbackImg}
+                                    src={formatImageUrl(product.image_url)}
                                     alt={product.name}
                                     onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -531,7 +540,7 @@ const ProductDetails = () => {
                                 }}>
                                     <div style={{ height: '180px', borderRadius: '12px', overflow: 'hidden', margin: '0.8rem', background: 'rgba(0, 0, 0, 0.02)' }}>
                                         <img
-                                            src={p.image_url !== 'no-image.jpg' ? p.image_url : fallbackImg}
+                                            src={formatImageUrl(p.image_url)}
                                             alt={p.name}
                                             onError={(e) => { e.target.onerror = null; e.target.src = fallbackImg; }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}

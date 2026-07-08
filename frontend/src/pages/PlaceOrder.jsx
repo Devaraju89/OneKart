@@ -67,7 +67,7 @@ const PlaceOrder = () => {
                     image: item.image_url,
                     price: item.price,
                     unit: item.unit || 'kg',
-                    seller: item.seller._id || item.seller
+                    seller: item.seller?._id || item.seller || null
                 })),
                 shippingAddress: { address, city, postalCode, country, mobile },
                 paymentMethod,
@@ -265,7 +265,7 @@ const PlaceOrder = () => {
     }
 
     return (
-        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '4rem 0' }}>
+        <div style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '5.5rem', paddingBottom: '4rem' }}>
             <div className="container" style={{ maxWidth: '1100px' }}>
 
                 {/* Progress Bar */}
@@ -283,7 +283,7 @@ const PlaceOrder = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '3rem' }}>
+                <div className="placeorder-layout-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '3rem' }}>
 
                     {/* LEFT SIDE */}
                     <div>
@@ -305,7 +305,7 @@ const PlaceOrder = () => {
                                             style={{ width: '100%', padding: '1rem', borderRadius: '1rem', border: '1px solid #e2e8f0', minHeight: '100px', fontSize: '1rem' }}
                                         />
                                     </div>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                                    <div className="placeorder-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                         <div>
                                             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '800', textTransform: 'uppercase', marginBottom: '0.6rem', color: 'var(--text-muted)' }}>City</label>
                                             <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="e.g. Hyderabad" style={{ width: '100%', padding: '1rem', borderRadius: '1rem', border: '1px solid #e2e8f0', fontSize: '1rem' }} />

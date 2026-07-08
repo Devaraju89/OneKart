@@ -80,7 +80,7 @@ const MyOrders = () => {
     return (
         <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '8rem 0 4rem 0' }}>
             <div className="container" style={{ maxWidth: '1000px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+                <div className="myorders-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
                     <div>
                         <h1 style={{ fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Your Harvest History</h1>
                         <p style={{ color: 'var(--text-muted)' }}>Keep track of your fresh orders and seasonal favorites</p>
@@ -107,7 +107,7 @@ const MyOrders = () => {
                             const style = getStatusStyle(order.status, order.isPaid);
                             return (
                                 <div key={order._id} className="card animate-fade" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                    <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '2rem', alignItems: 'center', width: '100%' }}>
+                                    <div className="order-card-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '2rem', alignItems: 'center', width: '100%' }}>
                                         <div>
                                             <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'center' }}>
                                                 <div style={{ width: '70px', height: '70px', borderRadius: '1.2rem', background: '#f1f5f9', overflow: 'hidden', flexShrink: 0, border: '1px solid #e2e8f0' }}>

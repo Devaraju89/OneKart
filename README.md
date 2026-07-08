@@ -20,31 +20,33 @@ This project has been migrated from PHP to the MERN stack (MongoDB, Express, Rea
 1.  **Node.js**: Ensure Node.js is installed.
 2.  **MongoDB**: Ensure MongoDB is running locally on port `27017` or update `backend/.env`.
 
-## How to Run
+## Quick Start
 
-### 1. Start the Backend
+The project is structured with a root orchestrator to make development easier.
 
+1.  **Install everything**:
+    ```bash
+    npm run install-all
+    ```
+2.  **Seed the database** (Optional - if db is empty):
+    ```bash
+    npm run seed
+    ```
+3.  **Run both Frontend & Backend**:
+    ```bash
+    npm run dev
+    ```
+
+## Individual Service Commands
+
+### Backend
 Open a terminal in the `backend` folder:
+- `npm run dev`: Start server with nodemon.
+- `npm run data:import`: Reset and seed database with dummy data.
 
-```bash
-cd backend
-npm install   # Install dependencies (only needed once)
-npm run dev   # Start the server with Nodemon
-```
-
- The server will start on `http://localhost:5000`.
-
-### 2. Start the Frontend
-
-Open a new terminal in the `frontend` folder:
-
-```bash
-cd frontend
-npm install   # Install dependencies (only needed once)
-npm run dev   # Start the React development server
-```
-
-Access the application at the URL provided (usually `http://localhost:5173`).
+### Frontend
+Open a terminal in the `frontend` folder:
+- `npm run dev`: Start Vite development server.
 
 ## Features Ported
 

@@ -1,9 +1,28 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Package, ShoppingCart, Plus, ArrowRight, TrendingUp, Users, DollarSign, Layers, Star, Clock } from 'lucide-react';
+import { Package, ShoppingCart, Plus, ArrowRight, TrendingUp, Star, Clock, Leaf, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import AuthContext from '../../context/AuthContext';
+
+const StatCard = ({ icon: Icon, label, value, sub, accent, to }) => {
+    const content = (
+        <div className="glass-card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'var(--cream)', transition: 'transform 0.25s ease, box-shadow 0.25s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; }}
+        >
+            <div style={{ width: '56px', height: '56px', flexShrink: 0, background: accent + '18', border: `1.5px solid ${accent}40`, borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: accent, boxShadow: '3px 3px 0px rgba(61,43,31,0.08)' }}>
+                <Icon size={26} strokeWidth={1.5} />
+            </div>
+            <div>
+                <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.6rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontFamily: "'IM Fell English SC', serif", fontSize: '2rem', color: 'var(--soil)', lineHeight: '1' }}>{value}</div>
+                {sub && <div style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{sub}</div>}
+            </div>
+        </div>
+    );
+    return to ? <Link to={to} style={{ textDecoration: 'none' }}>{content}</Link> : content;
+};
 
 const SellerDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -11,58 +30,36 @@ const SellerDashboard = () => {
     const [recentOrders, setRecentOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    useEffect(() => { fetchData(); }, []);
 
     const fetchData = async () => {
         try {
             const { data: ordersData } = await axios.get('/api/orders');
-            const orders = ordersData.data || [];
+            const orders = (ordersData.data || []).filter(o => o && o.status);
+            const activeOrders = orders.filter(o => o.status !== 'Cancelled');
+            const totalRevenue = activeOrders.reduce((acc, o) => acc + (o.totalPrice || 0), 0);
 
-            // Calculate Stats
-            const activeOrders = orders.filter(order => order.status !== 'Cancelled');
-            const totalRevenue = activeOrders.reduce((acc, order) => acc + order.totalPrice, 0);
-
-            // Fetch products for inventory insights
             const { data: productsData } = await axios.get('/api/products?keyword=');
             let myProducts = [];
             let lowStockCount = 0;
-
-            if (productsData.data) {
-                myProducts = productsData.data.filter(p => p.seller._id === user.id || p.seller === user.id);
-                lowStockCount = myProducts.filter(p => p.quantity < 20).length;
+            if (productsData.data && Array.isArray(productsData.data)) {
+                myProducts = productsData.data.filter(p => p && (p.seller?._id === user.id || p.seller === user.id));
+                lowStockCount = myProducts.filter(p => (p.quantity || 0) < 20).length;
             }
-
-            setStats({
-                products: myProducts.length,
-                orders: activeOrders.length,
-                revenue: totalRevenue,
-                lowStock: lowStockCount
-            });
-
+            setStats({ products: myProducts.length, orders: activeOrders.length, revenue: totalRevenue, lowStock: lowStockCount });
             setRecentOrders(orders.slice(0, 5));
-            setLoading(false);
-
-        } catch (error) {
-            console.error("Dashboard Load Error:", error);
-            setLoading(false);
-        }
+        } catch (err) { console.error('Dashboard Load Error:', err); }
+        finally { setLoading(false); }
     };
 
     const updateStatus = async (id, status) => {
         try {
             let trackingNumber = null;
-            if (status === 'Shipped' || status === 'Out for Delivery') {
-                trackingNumber = window.prompt("Enter Tracking Number (Optional):");
-            }
-
+            if (status === 'Shipped' || status === 'Out for Delivery') { trackingNumber = window.prompt('Enter Tracking Number (Optional):'); }
             await axios.put(`/api/orders/${id}/status`, { status, trackingNumber });
-            toast.success(`Order #${id.substr(-6)} updated to ${status}`);
-            fetchData(); // Refresh list
-        } catch (error) {
-            toast.error('Update failed');
-        }
+            toast.success(`Order updated to ${status}`);
+            fetchData();
+        } catch { toast.error('Update failed'); }
     };
 
     const getTimeAgo = (dateStr) => {
@@ -70,151 +67,102 @@ const SellerDashboard = () => {
         const minutes = Math.floor(diff / 60000);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
-
         if (minutes < 60) return `${minutes}m ago`;
         if (hours < 24) return `${hours}h ago`;
         return `${days}d ago`;
     };
 
     return (
-        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '4rem 0' }}>
-            <div className="container">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div style={{ background: 'var(--parchment)', backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper.png")', minHeight: '100vh', paddingTop: '80px', paddingBottom: '6rem' }}>
+
+            {/* ── Header ── */}
+            <div style={{ background: 'var(--soil)', backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-wood.png")', backgroundBlendMode: 'multiply', borderBottom: '3px solid var(--border-dk)', padding: '3rem 0 2.5rem', marginBottom: '4rem' }}>
+                <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
                     <div>
-                        <h1 style={{ fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Welcome back, {user?.name}</h1>
-                        <p style={{ color: 'var(--text-muted)' }}>Here's what's happening with your farm today</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginBottom: '0.8rem' }}>
+                            <div style={{ width: '24px', height: '1.5px', background: 'var(--gold)' }} />
+                            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.65rem', fontWeight: '700', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>Farmer · Estate Dashboard</span>
+                        </div>
+                        <h1 style={{ fontFamily: "'IM Fell English SC', Georgia, serif", color: 'var(--parchment)', fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: '400', margin: 0 }}>
+                            Welcome back, {user?.name?.split(' ')[0]}.
+                        </h1>
+                        <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'rgba(245,239,215,0.65)', fontSize: '0.95rem', marginTop: '0.5rem' }}>Here's what's happening on your farm today.</p>
                     </div>
-                    <Link to="/seller/add-product" className="btn btn-primary" style={{ borderRadius: '1.2rem' }}>
-                        <Plus size={20} /> List New Product
+                    <Link to="/seller/add-product" className="btn" style={{ background: 'var(--gold)', color: 'var(--soil)', border: '2px solid var(--gold)', padding: '0.75rem 1.6rem', fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.82rem', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.5rem', boxShadow: '4px 4px 0px rgba(61,43,31,0.3)', borderRadius: '4px' }}>
+                        <Plus size={18} /> List New Product
                     </Link>
                 </div>
+            </div>
 
-                {/* Stats Cards */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
-                    <div className="card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ width: '60px', height: '60px', background: '#d1fae5', color: 'var(--primary)', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Layers size={32} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>Live Products</div>
-                            <div style={{ fontSize: '1.8rem', fontWeight: '800' }}>{stats.products}</div>
-                        </div>
-                    </div>
-                    <div className="card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ width: '60px', height: '60px', background: '#e0e7ff', color: '#6366f1', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <ShoppingCart size={32} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>Total Orders</div>
-                            <div style={{ fontSize: '1.8rem', fontWeight: '800' }}>{stats.orders}</div>
-                        </div>
-                    </div>
-                    <div className="card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                        <div style={{ width: '60px', height: '60px', background: '#fef3c7', color: '#f59e0b', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <DollarSign size={32} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>Earnings</div>
-                            <div style={{ fontSize: '1.8rem', fontWeight: '800' }}>₹{stats.revenue.toLocaleString()}</div>
-                        </div>
-                    </div>
-                    <Link to="/seller/reviews" className="card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', textDecoration: 'none', color: 'inherit', transition: 'transform 0.3s' }}>
-                        <div style={{ width: '60px', height: '60px', background: '#e0f2fe', color: '#0ea5e9', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Star size={32} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>Feedback</div>
-                            <div style={{ fontSize: '1.2rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                View Reports <ArrowRight size={16} />
-                            </div>
-                        </div>
-                    </Link>
+            <div className="container">
+                {/* Stats */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+                    <StatCard icon={Package} label="Live Products" value={stats.products} sub="In your catalog" accent="var(--rust)" />
+                    <StatCard icon={ShoppingCart} label="Total Orders" value={stats.orders} sub="Excl. cancelled" accent="var(--gold)" />
+                    <StatCard icon={TrendingUp} label="Earnings" value={`₹${stats.revenue.toLocaleString()}`} sub="Gross revenue" accent="var(--sage)" />
+                    <StatCard icon={Star} label="Feedback" value="Reports" sub="View all reviews" accent="var(--soil)" to="/seller/reviews" />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                    {/* Inventory (Static for now/placeholder or could be real) */}
-                    <div className="card" style={{ padding: '2.5rem' }}>
+                {/* Divider */}
+                <div style={{ height: '1.5px', background: 'linear-gradient(to right, transparent, var(--border-dk), transparent)', marginBottom: '3rem' }} />
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem' }}>
+                    {/* Inventory Status */}
+                    <div className="glass-card" style={{ padding: '2.5rem', background: 'var(--cream)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                            <h3 style={{ fontSize: '1.5rem' }}>Inventory Status</h3>
-                            <Link to="/seller/products" style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                Manage All <ArrowRight size={16} />
+                            <h3 style={{ fontFamily: "'IM Fell English SC', Georgia, serif", fontSize: '1.5rem', color: 'var(--soil)', fontWeight: '400' }}>Inventory Status</h3>
+                            <Link to="/seller/products" style={{ fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.75rem', color: 'var(--rust)', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                Manage <ArrowRight size={14} />
                             </Link>
                         </div>
-                        <div style={{ display: 'grid', gap: '1.2rem' }}>
-                            <div style={{ padding: '1rem', background: '#f8fafc', borderRadius: '1rem', border: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ fontWeight: '600' }}>Your Active Catalog</span>
-                                <span style={{ color: 'var(--primary)', fontWeight: '800' }}>{stats.products} Items Sourced</span>
-                            </div>
-
-                            <div style={{
-                                padding: '1rem',
-                                background: stats.lowStock > 0 ? '#fef2f2' : '#f0fdf4',
-                                borderRadius: '1rem',
-                                border: stats.lowStock > 0 ? '1px solid #fee2e2' : '1px solid #bbf7d0',
-                                display: 'flex', justifyContent: 'space-between',
-                                color: stats.lowStock > 0 ? '#dc2626' : '#15803d'
-                            }}>
-                                <span style={{ fontWeight: '600' }}>Stock Action</span>
-                                <span style={{ fontWeight: '800' }}>
-                                    {stats.lowStock > 0 ? `${stats.lowStock} Items Low` : 'Healthy Levels'}
-                                </span>
-                            </div>
+                        <div style={{ display: 'grid', gap: '1rem' }}>
+                            {[
+                                { label: 'Your Active Catalog', value: `${stats.products} Items`, ok: true },
+                                { label: 'Stock Alert', value: stats.lowStock > 0 ? `${stats.lowStock} Items Low` : 'Healthy Levels', ok: stats.lowStock === 0 }
+                            ].map(({ label, value, ok }) => (
+                                <div key={label} style={{ padding: '1rem 1.4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: ok ? 'rgba(90,122,75,0.07)' : 'rgba(193,68,14,0.07)', border: `1.5px solid ${ok ? 'rgba(90,122,75,0.25)' : 'rgba(193,68,14,0.25)'}`, borderRadius: '4px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: "'Lora', serif", fontSize: '0.9rem', color: 'var(--soil)', fontWeight: '600' }}>
+                                        {ok ? <Leaf size={16} color="var(--sage)" strokeWidth={1.5} /> : <AlertTriangle size={16} color="var(--rust)" strokeWidth={1.5} />}
+                                        {label}
+                                    </div>
+                                    <span style={{ fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.82rem', color: ok ? 'var(--sage)' : 'var(--rust)', letterSpacing: '0.05em' }}>{value}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Recent Activity - NOW DYNAMIC AND ACTIONABLE */}
-                    <div className="card" style={{ padding: '2.5rem' }}>
+                    {/* Recent Orders */}
+                    <div className="glass-card" style={{ padding: '2.5rem', background: 'var(--cream)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                            <h3 style={{ fontSize: '1.5rem' }}>Recent Activity</h3>
-                            <Link to="/seller/orders" style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                View Full List <ArrowRight size={16} />
+                            <h3 style={{ fontFamily: "'IM Fell English SC', Georgia, serif", fontSize: '1.5rem', color: 'var(--soil)', fontWeight: '400' }}>Recent Activity</h3>
+                            <Link to="/seller/orders" style={{ fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.75rem', color: 'var(--rust)', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                Full List <ArrowRight size={14} />
                             </Link>
                         </div>
 
                         {loading ? (
-                            <div style={{ textAlign: 'center', padding: '1rem', color: '#94a3b8' }}>Loading updates...</div>
+                            <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>Loading…</p>
                         ) : recentOrders.length === 0 ? (
-                            <div style={{ textAlign: 'center', padding: '1rem', color: '#94a3b8' }}>No recent activity to report.</div>
+                            <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>No recent orders yet.</p>
                         ) : (
-                            <div style={{ display: 'grid', gap: '1.2rem' }}>
+                            <div style={{ display: 'grid', gap: '0.8rem' }}>
                                 {recentOrders.map(order => (
-                                    <div key={order._id} style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.8rem', background: '#fff', border: '1px solid #f1f5f9', borderRadius: '1rem' }}>
-                                        <div style={{
-                                            width: '12px', height: '12px', borderRadius: '50%', flexShrink: 0,
-                                            background: order.status === 'Delivered' ? '#10b981' : order.status === 'Cancelled' ? '#ef4444' : 'var(--primary)'
-                                        }}></div>
-
+                                    <div key={order._id} style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.9rem 1.2rem', background: 'var(--parchment)', border: '1px solid var(--border)', borderRadius: '4px' }}>
+                                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0, background: order.status === 'Delivered' ? 'var(--sage)' : order.status === 'Cancelled' ? 'var(--rust)' : 'var(--gold)' }} />
                                         <div style={{ flex: 1 }}>
-                                            <div style={{ fontSize: '0.9rem', fontWeight: '700', lineHeight: 1.2 }}>
-                                                Order #{order._id.substr(-6)}
-                                                <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}> via {order.user?.name || 'Guest'}</span>
+                                            <div style={{ fontFamily: "'Lora', serif", fontSize: '0.88rem', fontWeight: '600', color: 'var(--soil)' }}>
+                                                #{order._id.substr(-6)} <span style={{ fontWeight: '400', color: 'var(--text-muted)', fontStyle: 'italic' }}>· {order.user?.name || 'Guest'}</span>
                                             </div>
-                                            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                                                {getTimeAgo(order.createdAt)} • ₹{order.totalPrice}
+                                            <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.68rem', color: 'var(--text-muted)', fontWeight: '600', marginTop: '2px' }}>
+                                                {getTimeAgo(order.createdAt)} · ₹{order.totalPrice}
                                             </div>
                                         </div>
-
-                                        {/* Quick Action Status */}
                                         {order.status === 'Cancelled' ? (
-                                            <span style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem', borderRadius: '100px', background: '#fee2e2', color: '#ef4444', fontWeight: '800' }}>
-                                                CANCELLED
-                                            </span>
+                                            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.62rem', padding: '0.25rem 0.7rem', background: 'rgba(193,68,14,0.1)', color: 'var(--rust)', border: '1px solid rgba(193,68,14,0.3)', borderRadius: '2px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Cancelled</span>
                                         ) : (
-                                            <select
-                                                value={order.status}
-                                                onChange={(e) => updateStatus(order._id, e.target.value)}
-                                                style={{
-                                                    fontSize: '0.75rem', padding: '0.4rem 0.8rem', borderRadius: '100px',
-                                                    border: '1px solid #e2e8f0', background: '#f8fafc', fontWeight: '700',
-                                                    cursor: 'pointer', outline: 'none', maxWidth: '120px'
-                                                }}
-                                            >
-                                                <option value="Pending">Pending</option>
-                                                <option value="Confirmed">Confirmed</option>
-                                                <option value="Processing">Processing</option>
-                                                <option value="Shipped">Shipped</option>
-                                                <option value="Out for Delivery">In Transit</option>
-                                                <option value="Delivered">Done</option>
+                                            <select value={order.status} onChange={e => updateStatus(order._id, e.target.value)}
+                                                style={{ fontSize: '0.68rem', padding: '0.3rem 0.6rem', border: '1.5px solid var(--border)', background: 'var(--parchment-dk)', fontFamily: "'Outfit', sans-serif", fontWeight: '700', cursor: 'pointer', outline: 'none', borderRadius: '3px', color: 'var(--soil)' }}>
+                                                {['Pending', 'Confirmed', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered'].map(s => <option key={s} value={s}>{s}</option>)}
                                             </select>
                                         )}
                                     </div>

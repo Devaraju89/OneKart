@@ -1,167 +1,167 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Users, ShoppingBag, ClipboardList, TrendingUp, ShieldCheck, UserPlus, PackageSearch, UserCheck } from 'lucide-react';
+import { Users, ShoppingBag, ClipboardList, UserPlus, Wheat, Sprout, TrendingUp, ArrowRight } from 'lucide-react';
+
+/* ─── Shared heritage page layout wrapper ─── */
+const PageWrap = ({ children }) => (
+    <div style={{
+        background: 'var(--parchment)',
+        backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper.png")',
+        minHeight: '100vh', paddingTop: '80px', paddingBottom: '6rem'
+    }}>
+        {children}
+    </div>
+);
+
+/* ─── Heritage page header band ─── */
+const PageHeader = ({ eyebrow, title, subtitle, extra }) => (
+    <div style={{
+        background: 'var(--soil)',
+        backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-wood.png")',
+        backgroundBlendMode: 'multiply',
+        borderBottom: '3px solid var(--border-dk)',
+        padding: '3rem 0 2.5rem',
+        marginBottom: '4rem'
+    }}>
+        <div className="container">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginBottom: '0.8rem' }}>
+                        <div style={{ width: '24px', height: '1.5px', background: 'var(--gold)' }} />
+                        <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.65rem', fontWeight: '700', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>{eyebrow}</span>
+                    </div>
+                    <h1 style={{ fontFamily: "'IM Fell English SC', Georgia, serif", color: 'var(--parchment)', fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', fontWeight: '400', margin: 0 }}>{title}</h1>
+                    {subtitle && <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'rgba(245,239,215,0.65)', fontSize: '0.95rem', marginTop: '0.5rem' }}>{subtitle}</p>}
+                </div>
+                {extra}
+            </div>
+        </div>
+    </div>
+);
+
+/* ─── Heritage stat card ─── */
+const StatCard = ({ icon: Icon, label, value, sub, accent, delay = 0 }) => (
+    <div className="reveal-up active glass-card" style={{
+        padding: '2.5rem', background: 'var(--cream)',
+        position: 'relative', overflow: 'hidden',
+        transitionDelay: `${delay}s`
+    }}>
+        <div style={{
+            width: '56px', height: '56px', borderRadius: '4px',
+            background: accent + '18', border: `1.5px solid ${accent}40`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: accent, marginBottom: '1.5rem',
+            boxShadow: '3px 3px 0px rgba(61,43,31,0.1)'
+        }}>
+            <Icon size={26} strokeWidth={1.5} />
+        </div>
+        <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.65rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>{label}</div>
+        <div style={{ fontFamily: "'IM Fell English SC', serif", fontSize: '2.4rem', color: 'var(--soil)', lineHeight: '1', marginBottom: '0.4rem' }}>{value}</div>
+        {sub && <div style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '0.82rem', color: 'var(--text-muted)' }}>{sub}</div>}
+        <div style={{ position: 'absolute', right: '-10px', bottom: '-10px', opacity: 0.04, color: 'var(--soil)' }}>
+            <Icon size={100} />
+        </div>
+    </div>
+);
+
+/* ─── Heritage action card ─── */
+const ActionCard = ({ to, icon: Icon, title, desc, badge, accent, delay = 0 }) => (
+    <Link to={to} className="reveal-up active glass-card" style={{
+        padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem',
+        background: 'var(--cream)', textDecoration: 'none', transitionDelay: `${delay}s`
+    }}>
+        <div style={{
+            width: '58px', height: '58px', borderRadius: '4px',
+            background: accent + '15', border: `1.5px solid ${accent}35`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: accent, boxShadow: '3px 3px 0px rgba(61,43,31,0.08)'
+        }}>
+            <Icon size={28} strokeWidth={1.5} />
+        </div>
+        <div style={{ flex: 1 }}>
+            <h3 style={{
+                fontFamily: "'IM Fell English SC', Georgia, serif",
+                fontSize: '1.3rem', color: 'var(--soil)', fontWeight: '400',
+                marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.6rem'
+            }}>
+                {title}
+                {badge > 0 && (
+                    <span style={{ padding: '0.15rem 0.5rem', background: 'var(--rust)', color: 'white', borderRadius: '2px', fontSize: '0.65rem', fontFamily: "'Outfit', sans-serif", fontWeight: '700' }}>{badge}</span>
+                )}
+            </h3>
+            <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.65' }}>{desc}</p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: accent, fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Open <ArrowRight size={15} />
+        </div>
+    </Link>
+);
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({ revenue: 0, orders: 0, users: 0, farmers: 0, pending: 0 });
     const [loading, setLoading] = useState(true);
-    const [recentActivity, setRecentActivity] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch Users and Orders in parallel for full oversight
-                const [usersRes, ordersRes] = await Promise.all([
-                    axios.get('/api/users'),
-                    axios.get('/api/orders')
-                ]);
-
+                const [usersRes, ordersRes] = await Promise.all([axios.get('/api/users'), axios.get('/api/orders')]);
                 const users = usersRes.data.data || [];
                 const orders = ordersRes.data.data || [];
-
-                // Calculate User Stats
                 const farmers = users.filter(u => u.role === 'farmer').length;
-                const pendingFarmers = users.filter(u => u.role === 'farmer' && u.status === 'pending').length; // Logic depends on backend response
-
-                // Calculate Revenue (Sum of all completed/paid orders excluding cancelled)
-                const totalRevenue = orders
-                    .filter(order => order.status !== 'Cancelled')
-                    .reduce((acc, order) => acc + (order.totalPrice || 0), 0);
-
-                const activeOrdersCount = orders.filter(order => order.status !== 'Cancelled').length;
-
-                setStats({
-                    revenue: totalRevenue,
-                    orders: activeOrdersCount,
-                    users: users.length,
-                    farmers: farmers,
-                    pending: pendingFarmers // If we can't derive this easily from /api/users, we might need /api/users/stats. But let's assume /api/users returns all.
-                });
-
-                setRecentActivity(orders.slice(0, 5));
-
-            } catch (err) {
-                console.error("Dashboard Data Error", err);
-            } finally {
-                setLoading(false);
-            }
+                const pendingFarmers = users.filter(u => u.role === 'farmer' && u.status === 'pending').length;
+                const totalRevenue = orders.filter(o => o.status !== 'Cancelled').reduce((acc, o) => acc + (o.totalPrice || 0), 0);
+                const activeOrders = orders.filter(o => o.status !== 'Cancelled').length;
+                setStats({ revenue: totalRevenue, orders: activeOrders, users: users.length, farmers, pending: pendingFarmers });
+            } catch (err) { console.error('Dashboard Data Error', err); }
+            finally { setLoading(false); }
         };
         fetchData();
     }, []);
 
+    const statCards = [
+        { icon: TrendingUp, label: 'Total Revenue', value: loading ? '…' : `₹${stats.revenue.toLocaleString()}`, sub: 'Lifetime gross volume', accent: 'var(--rust)' },
+        { icon: Users, label: 'Platform Members', value: loading ? '…' : stats.users, sub: `${stats.farmers} Farmers · ${stats.users - stats.farmers} Customers`, accent: 'var(--gold)' },
+        { icon: ClipboardList, label: 'Active Orders', value: loading ? '…' : stats.orders, sub: 'Excluding cancelled', accent: 'var(--sage)' },
+        { icon: Sprout, label: 'Farmer Partners', value: loading ? '…' : stats.farmers, sub: stats.pending > 0 ? `${stats.pending} pending approval` : 'All verified', accent: 'var(--soil)' },
+    ];
+
+    const actionCards = [
+        { to: '/admin/requests', icon: UserPlus, title: 'Farmer Applications', desc: 'Review and approve incoming farmer estate registrations and verify credentials.', badge: stats.pending, accent: 'var(--rust)', delay: 0 },
+        { to: '/admin/users', icon: Users, title: 'Manage Community', desc: 'Full directory of all customers and active farmers. Handle support and account status.', accent: 'var(--gold)', delay: 0.06 },
+        { to: '/admin/orders', icon: ShoppingBag, title: 'Platform Orders', desc: 'Monitor all sales across the marketplace. Oversee logistics and resolve disputes.', accent: 'var(--sage)', delay: 0.12 },
+        { to: '/admin/products', icon: Wheat, title: 'All Products', desc: 'Browse and manage every product listed across the entire estate marketplace.', accent: 'var(--soil)', delay: 0.18 },
+    ];
+
     return (
-        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '8rem 0 4rem 0' }}>
+        <PageWrap>
+            <PageHeader
+                eyebrow="Admin · Oversight Panel"
+                title="Marketplace Control"
+                subtitle="Real-time platform metrics and administrative governance."
+                extra={
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.2rem', background: 'rgba(90,122,75,0.25)', border: '1.5px solid var(--sage)', borderRadius: '4px' }}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--sage-light)', boxShadow: '0 0 8px var(--sage)' }} />
+                        <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--sage-light)' }}>System Online</span>
+                    </div>
+                }
+            />
             <div className="container">
-                <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                    <div>
-                        <h1 style={{ fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Marketplace Oversight</h1>
-                        <p style={{ color: 'var(--text-muted)' }}>Real-time platform metrics and administrative control.</p>
-                    </div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: '700', color: 'var(--primary)', background: '#eff6ff', padding: '0.5rem 1rem', borderRadius: '20px' }}>
-                        Live System Status: Online
-                    </div>
+                {/* Stats Row */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+                    {statCards.map((s, i) => <StatCard key={i} {...s} delay={i * 0.06} />)}
                 </div>
 
-                {/* Stat Summary Section */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
-                    {/* Revenue Card */}
-                    <div className="card animate-fade" style={{ padding: '2.5rem', position: 'relative', overflow: 'hidden', border: 'none', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', color: 'white' }}>
-                        <div style={{ position: 'relative', zIndex: 1 }}>
-                            <div style={{ fontSize: '0.9rem', opacity: 0.8, fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Total Revenue</div>
-                            <div style={{ fontSize: '2.8rem', fontWeight: '800', display: 'flex', alignItems: 'center' }}>
-                                <span style={{ fontSize: '1.5rem', marginRight: '4px', opacity: 0.7 }}>₹</span>
-                                {loading ? '...' : stats.revenue.toLocaleString()}
-                            </div>
-                            <div style={{ marginTop: '1rem', fontSize: '0.85rem', opacity: 0.6 }}>Lifetime Gross Volume</div>
-                        </div>
-                        <div style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.1 }}>
-                            <ShoppingBag size={140} />
-                        </div>
-                    </div>
+                {/* Aged divider */}
+                <div style={{ height: '1.5px', background: 'linear-gradient(to right, transparent, var(--border-dk), transparent)', marginBottom: '3rem' }} />
 
-                    {/* Users / Community Card */}
-                    <div className="card animate-fade" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', animationDelay: '0.1s' }}>
-                        <div style={{ width: '70px', height: '70px', background: '#eff6ff', color: '#2563eb', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Users size={36} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: '600' }}>Platform Members</div>
-                            <div style={{ fontSize: '2.2rem', fontWeight: '800', lineHeight: 1 }}>{loading ? '...' : stats.users}</div>
-                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{stats.farmers} Farmers / {stats.users - stats.farmers} Customers</div>
-                        </div>
-                    </div>
-
-                    {/* Orders Card */}
-                    <div className="card animate-fade" style={{ padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', animationDelay: '0.2s' }}>
-                        <div style={{ width: '70px', height: '70px', background: '#f0fdf4', color: '#16a34a', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <ClipboardList size={36} />
-                        </div>
-                        <div>
-                            <div style={{ fontSize: '0.95rem', color: 'var(--text-muted)', fontWeight: '600' }}>Total Orders Processed</div>
-                            <div style={{ fontSize: '2.2rem', fontWeight: '800', lineHeight: 1 }}>{loading ? '...' : stats.orders}</div>
-                            <Link to="/admin/orders" style={{ fontSize: '0.8rem', color: '#16a34a', marginTop: '0.2rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
-                                View All Logistics <ChevronRight size={14} />
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    {/* Management Actions */}
-                    <Link to="/admin/requests" className="card animate-fade" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', border: '1px solid #f1f5f9' }}>
-                        <div style={{ width: '64px', height: '64px', background: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <UserPlus size={32} />
-                        </div>
-                        <div>
-                            <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Seller Requests {stats.pending > 0 && <span style={{ padding: '2px 8px', background: '#fee2e2', color: '#dc2626', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', marginLeft: '0.5rem' }}>{stats.pending}</span>}</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                                Review documentation and verify credentials for new farmer applications.
-                            </p>
-                        </div>
-                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)', fontWeight: '700' }}>
-                            Go to Approvals <ChevronRight size={20} />
-                        </div>
-                    </Link>
-
-                    <Link to="/admin/users" className="card animate-fade" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', transitionDelay: '0.1s' }}>
-                        <div style={{ width: '64px', height: '64px', background: '#e0e7ff', color: '#6366f1', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Users size={32} />
-                        </div>
-                        <div>
-                            <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Manage Community</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                                Full directory of customers and active farmers. Handle support and account status.
-                            </p>
-                        </div>
-                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#6366f1', fontWeight: '700' }}>
-                            View All Users <ChevronRight size={20} />
-                        </div>
-                    </Link>
-
-                    <Link to="/admin/orders" className="card animate-fade" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', transitionDelay: '0.2s' }}>
-                        <div style={{ width: '64px', height: '64px', background: '#fef3c7', color: '#f59e0b', borderRadius: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <ShoppingBag size={32} />
-                        </div>
-                        <div>
-                            <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Platform Orders</h3>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                                Monitor sales across the entire marketplace. Oversee logistics and disputes.
-                            </p>
-                        </div>
-                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f59e0b', fontWeight: '700' }}>
-                            Order Management <ChevronRight size={20} />
-                        </div>
-                    </Link>
+                {/* Action Cards */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem' }}>
+                    {actionCards.map((a, i) => <ActionCard key={i} {...a} />)}
                 </div>
             </div>
-        </div>
+        </PageWrap>
     );
 };
-
-// Helper for UI
-const ChevronRight = ({ size }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
-);
 
 export default AdminDashboard;

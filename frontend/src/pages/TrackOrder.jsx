@@ -77,7 +77,7 @@ const TrackOrder = () => {
     const safeIndex = getSafeIndex();
 
     return (
-        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '4rem 0' }}>
+        <div style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '5.5rem', paddingBottom: '4rem' }}>
             <div className="container" style={{ maxWidth: '800px' }}>
                 <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                     <h1 style={{ fontSize: '3rem', letterSpacing: '-0.05em', marginBottom: '1rem' }}>Where's my harvest?</h1>
@@ -120,7 +120,7 @@ const TrackOrder = () => {
                                     </p>
                                 </div>
                             ) : (
-                                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', marginBottom: '4rem' }}>
+                                <div className="track-order-steps" style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', marginBottom: '4rem' }}>
                                     {/* Track Line */}
                                     <div style={{ position: 'absolute', top: '24px', left: '0', right: '0', height: '4px', background: '#e2e8f0', zIndex: 1 }}></div>
                                     <div style={{ position: 'absolute', top: '24px', left: '0', width: `${(safeIndex / (steps.length - 1)) * 100}%`, height: '4px', background: 'var(--primary)', zIndex: 2, transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)' }}></div>
@@ -130,20 +130,21 @@ const TrackOrder = () => {
                                         const isCurrent = index === safeIndex;
 
                                         return (
-                                            <div key={step.id} style={{ position: 'relative', zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                                            <div key={step.id} style={{ position: 'relative', zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: 0 }}>
                                                 <div style={{
-                                                    width: '50px', height: '50px', borderRadius: '50%',
+                                                    width: '44px', height: '44px', borderRadius: '50%',
                                                     background: isActive ? 'var(--primary)' : 'white',
                                                     border: isActive ? '4px solid white' : '4px solid #e2e8f0',
                                                     color: isActive ? 'white' : '#cbd5e1',
                                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                     boxShadow: isCurrent ? '0 0 20px rgba(16, 185, 129, 0.4)' : 'none',
                                                     transform: isCurrent ? 'scale(1.15)' : 'scale(1)',
-                                                    transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                                                    transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                                    flexShrink: 0
                                                 }}>
-                                                    {step.icon || <Package size={24} />}
+                                                    {step.icon || <Package size={20} />}
                                                 </div>
-                                                <div style={{ fontSize: '0.9rem', fontWeight: '800', color: isActive ? 'var(--text-main)' : '#cbd5e1', whiteSpace: 'nowrap' }}>
+                                                <div style={{ fontSize: '0.7rem', fontWeight: '800', color: isActive ? 'var(--text-main)' : '#cbd5e1', textAlign: 'center', wordBreak: 'break-word', lineHeight: 1.2 }}>
                                                     {step.label}
                                                 </div>
                                             </div>
@@ -152,7 +153,7 @@ const TrackOrder = () => {
                                 </div>
                             )}
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', borderTop: '1px solid #f1f5f9', paddingTop: '3rem' }}>
+                            <div className="track-info-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', borderTop: '1px solid #f1f5f9', paddingTop: '3rem' }}>
                                 <div>
                                     <h4 style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Order Information</h4>
                                     <div style={{ display: 'grid', gap: '0.8rem' }}>

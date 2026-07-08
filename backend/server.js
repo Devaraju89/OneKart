@@ -46,6 +46,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/inquiries', require('./routes/inquiries'));
+app.use('/api/chatbot', require('./routes/chatbot'));
 
 const PORT = process.env.PORT || 5000;
 

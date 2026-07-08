@@ -10,7 +10,7 @@ const Cart = () => {
     return (
         <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '8rem 0 8rem' }}>
             <div className="container" style={{ maxWidth: '1000px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '3rem' }}>
+                <div className="cart-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '3rem' }}>
                     <h1 style={{ fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Your Selection</h1>
                     <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontWeight: '600' }}>
                         <ArrowLeft size={20} /> Continue Shopping
@@ -32,11 +32,11 @@ const Cart = () => {
                         <Link to="/" className="btn btn-primary" style={{ padding: '1rem 3rem' }}>Explore Marketplace</Link>
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr', gap: '2.5rem', alignItems: 'start' }}>
+                    <div className="cart-layout-grid" style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr', gap: '2.5rem', alignItems: 'start' }}>
                         {/* Items List */}
                         <div style={{ display: 'grid', gap: '1.5rem' }}>
                             {cartItems.map(item => (
-                                <div key={item._id} className="card animate-fade" style={{
+                                <div key={item._id} className="card animate-fade cart-item-card" style={{
                                     display: 'grid', gridTemplateColumns: '120px 1fr 150px',
                                     gap: '1.5rem', padding: '1.2rem', alignItems: 'center'
                                 }}>
@@ -56,14 +56,14 @@ const Cart = () => {
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
                                         <div style={{ display: 'inline-flex', alignItems: 'center', background: '#f1f5f9', borderRadius: '0.8rem', padding: '0.4rem' }}>
                                             <button
-                                                onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                                                onClick={() => updateQuantity(item._id, item.qty - 1)}
                                                 style={{ padding: '0.4rem', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex' }}
                                             >
                                                 <Minus size={16} />
                                             </button>
-                                            <span style={{ padding: '0 1rem', fontWeight: '700', fontSize: '1rem' }}>{item.quantity}</span>
+                                            <span style={{ padding: '0 1rem', fontWeight: '700', fontSize: '1rem' }}>{item.qty}</span>
                                             <button
-                                                onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                                                onClick={() => updateQuantity(item._id, item.qty + 1)}
                                                 style={{ padding: '0.4rem', border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex' }}
                                             >
                                                 <Plus size={16} />

@@ -52,7 +52,7 @@ const Profile = () => {
     };
 
     return (
-        <div style={{ background: '#f8fafc', minHeight: '100vh', padding: '4rem 0' }}>
+        <div style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '5.5rem', paddingBottom: '4rem' }}>
             <div className="container" style={{ maxWidth: '800px' }}>
                 <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
                     <h1 style={{ fontSize: '2.5rem', letterSpacing: '-0.04em' }}>Account Settings</h1>
@@ -61,7 +61,7 @@ const Profile = () => {
 
                 <div className="card animate-fade" style={{ padding: '3rem' }}>
                     <form onSubmit={submitHandler}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
+                        <div className="profile-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '800', textTransform: 'uppercase', marginBottom: '0.8rem', color: 'var(--text-muted)' }}>Full Name</label>
                                 <div style={{ position: 'relative' }}>

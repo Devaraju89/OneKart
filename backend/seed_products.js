@@ -13,7 +13,7 @@ const products = [
         category: "Vegetables",
         quantity: 50,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -23,7 +23,7 @@ const products = [
         category: "Vegetables",
         quantity: 100,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -33,7 +33,7 @@ const products = [
         category: "Fruits",
         quantity: 80,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -43,7 +43,7 @@ const products = [
         category: "Fruits",
         quantity: 40,
         unit: "dozen",
-        image_url: "https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -53,7 +53,7 @@ const products = [
         category: "Vegetables",
         quantity: 30,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1584270354949-c26b0d5b4a0c?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -63,17 +63,17 @@ const products = [
         category: "Fruits",
         quantity: 60,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
         name: "Rainbow Carrots",
-        description: "A beautiful mix of purple, orange, and yellow organic carrots.",
+        description: "A beautiful mix of purple, organic carrots.",
         price: 140,
         category: "Vegetables",
         quantity: 45,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1444312645910-ffa973656eba?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -83,7 +83,7 @@ const products = [
         category: "Vegetables",
         quantity: 200,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -93,7 +93,7 @@ const products = [
         category: "Fruits",
         quantity: 75,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1537640538966-79f369bd41f5?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
     {
@@ -103,7 +103,7 @@ const products = [
         category: "Vegetables",
         quantity: 35,
         unit: "kg",
-        image_url: "https://images.unsplash.com/photo-1543326162-42c676af740d?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=1200",
         seller: "697da5b8a737d2b57a0458d1"
     },
 
@@ -115,7 +115,7 @@ const products = [
         category: "Seeds",
         quantity: 100,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1599148482840-d71701404c23?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1599148482840-d71701404c23?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -125,7 +125,7 @@ const products = [
         category: "Seeds",
         quantity: 150,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1597420498493-982167a79ad1?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -135,7 +135,7 @@ const products = [
         category: "Tools",
         quantity: 25,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1617576621334-91608666504a?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1617576621334-91608666504a?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -145,7 +145,7 @@ const products = [
         category: "Tools",
         quantity: 15,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1589133880922-ebb2584104be?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1589133880922-ebb2584104be?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -155,7 +155,7 @@ const products = [
         category: "Tools",
         quantity: 10,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1416870262648-255f5f5c697a?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -165,7 +165,7 @@ const products = [
         category: "Seeds",
         quantity: 200,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1528666113571-001097e3fb6b?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -175,7 +175,7 @@ const products = [
         category: "Tools",
         quantity: 12,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1584483766114-2cea6facdf57?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1598902108854-10e335adac99?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -185,7 +185,7 @@ const products = [
         category: "Seeds",
         quantity: 120,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1560647102-170cb5f1d977?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -195,7 +195,7 @@ const products = [
         category: "Seeds",
         quantity: 300,
         unit: "packet",
-        image_url: "https://images.unsplash.com/photo-1618376168163-967aa04677fd?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1618164436241-4473940d1f5c?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
     {
@@ -205,7 +205,7 @@ const products = [
         category: "Tools",
         quantity: 8,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-159281907700e-6f97653782b5?auto=format&fit=crop&q=80&w=1200",
         seller: "697da884e806e3a7cee08f0b"
     },
 
@@ -217,7 +217,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 100,
         unit: "liter",
-        image_url: "https://images.unsplash.com/photo-1550583724-125581fe2f8a?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1550583724-125581fe2f8a?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -227,7 +227,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 50,
         unit: "ml",
-        image_url: "https://images.unsplash.com/photo-1589133880922-ebb2584104be?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -237,7 +237,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 40,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -247,7 +247,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 30,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -257,7 +257,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 40,
         unit: "dozen",
-        image_url: "https://images.unsplash.com/photo-1582722472200-d336a14e9f73?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -267,7 +267,7 @@ const products = [
         category: "Fruits",
         quantity: 25,
         unit: "box",
-        image_url: "https://images.unsplash.com/photo-1464960320293-d785f877e8a2?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1509622905150-fa66d3906e09?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -277,7 +277,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 60,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1481931098730-11263884c592?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -287,7 +287,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 45,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1573033527506-6f8e79c0903c?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1571244856353-fb0eef7ed4e5?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -297,7 +297,7 @@ const products = [
         category: "Tools",
         quantity: 20,
         unit: "unit",
-        image_url: "https://images.unsplash.com/photo-1594488630128-44-6b0994fd747ef?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1594488630128-44-6b0994fd747ef?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     },
     {
@@ -307,7 +307,7 @@ const products = [
         category: "Organic Dairy",
         quantity: 35,
         unit: "g",
-        image_url: "https://images.unsplash.com/photo-1589114934421-3d91943759ee?q=80&w=1000",
+        image_url: "https://images.unsplash.com/photo-1589114934421-3d91943759ee?auto=format&fit=crop&q=80&w=1200",
         seller: "697dab4f7fe8137381770ccf"
     }
 ];

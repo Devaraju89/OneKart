@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { ShoppingBag, LogOut, User, Menu, X, Package, ShieldCheck, MapPin, Search, Leaf } from 'lucide-react';
+
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import Login from './pages/Login';
@@ -27,6 +28,7 @@ import ManageUsers from './pages/admin/Users';
 import ManageRequests from './pages/admin/Requests';
 import ManageOrders from './pages/admin/ManageOrders';
 import ManageProducts from './pages/admin/ManageProducts';
+import Chatbot from './components/Chatbot';
 
 import AuthContext from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
@@ -42,11 +44,12 @@ const AppContent = () => {
     const [scrolled, setScrolled] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchOpen, setSearchOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
 
     // Pages that have transparent hero headers
-    const isHeroPage = location.pathname === '/' || location.pathname === '/marketplace';
-    const headerScrolled = scrolled || !isHeroPage;
+    // Always use the solid/glass header state to prevent overlapping text and improve readability
+    const headerScrolled = true;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -109,86 +112,60 @@ const AppContent = () => {
             <div className="grain-overlay" />
 
             <header
-                className={headerScrolled ? 'header-scrolled' : ''}
                 style={{
                     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-                    background: headerScrolled ? 'var(--glass)' : 'transparent',
-                    borderBottom: headerScrolled ? '1px solid var(--glass-border)' : 'none',
-                    padding: headerScrolled ? '0.6rem 0' : '1.2rem 0',
-                    transition: 'all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1)',
-                    backdropFilter: headerScrolled ? 'blur(20px)' : 'none',
-                    boxShadow: headerScrolled ? '0 10px 30px rgba(0,0,0,0.1)' : 'none'
+                    background: 'var(--glass)',
+                    borderBottom: '2px solid var(--border)',
+                    padding: '0.5rem 0',
+                    backdropFilter: 'blur(16px)',
+                    boxShadow: '0 4px 20px rgba(61,43,31,0.1)'
                 }}
             >
                 <nav className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link to="/" style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        zIndex: 10,
-                        textDecoration: 'none'
-                    }}>
+
+                    {/* ── Heritage Logo ── */}
+                    <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textDecoration: 'none' }}>
                         <div style={{
-                            background: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                            padding: '0.7rem',
-                            borderRadius: '16px',
+                            background: 'var(--soil)',
+                            padding: '0.55rem',
+                            borderRadius: '6px',
                             display: 'flex',
-                            boxShadow: headerScrolled ? '0 4px 15px rgba(22, 66, 60, 0.2)' : '0 4px 15px rgba(0,0,0,0.1)',
-                            transform: headerScrolled ? 'scale(0.9)' : 'scale(1)',
-                            transition: 'var(--transition)'
+                            boxShadow: '3px 3px 0px var(--soil-light)',
+                            border: '1.5px solid var(--soil)'
                         }}>
-                            <Leaf color={headerScrolled ? 'var(--creamy)' : 'var(--primary)'} size={24} />
+                            <Leaf color="var(--parchment)" size={22} strokeWidth={2} />
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <span style={{
-                                fontSize: '1.8rem',
-                                fontWeight: '900',
-                                color: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                                fontFamily: "'Playfair Display', serif",
-                                letterSpacing: '-0.04em',
+                                fontSize: '1.6rem',
+                                color: 'var(--soil)',
+                                fontFamily: "'IM Fell English SC', Georgia, serif",
                                 lineHeight: '1',
-                                transition: 'color 0.4s ease'
+                                letterSpacing: '0.02em'
                             }}>OneKart</span>
                             <span style={{
-                                fontSize: '0.65rem',
-                                color: headerScrolled ? 'var(--primary-light)' : 'rgba(250, 250, 238, 0.7)',
-                                fontWeight: '800',
+                                fontSize: '0.58rem',
+                                color: 'var(--rust)',
+                                fontFamily: "'Outfit', sans-serif",
+                                fontWeight: '700',
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.3em',
-                                opacity: headerScrolled ? 1 : 1,
-                                height: headerScrolled ? 'auto' : 'auto', // Keep auto height for both states
-                                overflow: 'hidden',
-                                transition: 'var(--transition)'
-                            }}>Estate Registry</span>
+                                letterSpacing: '0.35em'
+                            }}>Organic Estate</span>
                         </div>
                     </Link>
 
-                    <div style={{
-                        display: 'flex',
-                        gap: '3rem',
-                        alignItems: 'center',
-                        background: headerScrolled ? 'rgba(22, 66, 60, 0.03)' : 'transparent',
-                        padding: headerScrolled ? '0.5rem 2rem' : '0',
-                        borderRadius: '100px',
-                        transition: 'all 0.4s ease'
-                    }}>
+                    {/* ── Nav Links ── */}
+                    <div className="nav-menu-desktop" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
                         {navItems.map(item => (
-                            <Link key={item.path} to={item.path} className="nav-link" style={{
-                                fontSize: '0.9rem',
-                                fontWeight: '700',
-                                color: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                transition: 'color 0.4s ease'
-                            }}>
+                            <Link key={item.path} to={item.path} className="nav-link">
                                 {item.name}
                             </Link>
                         ))}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.8rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderRight: `1px solid ${headerScrolled ? 'var(--border)' : 'rgba(250,250,238,0.2)'}`, paddingRight: '1.5rem' }}>
-                            {/* Functional Search Bar */}
+                    {/* ── Right Controls ── */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1.5px solid var(--border)', paddingRight: '1.5rem' }}>
                             <form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -200,70 +177,56 @@ const AppContent = () => {
                                 style={{ display: 'flex', alignItems: 'center', position: 'relative' }}
                             >
                                 <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    background: searchOpen ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-                                    borderRadius: '100px',
-                                    padding: searchOpen ? '2px 2px 2px 1.2rem' : '0',
-                                    transition: 'all 0.4s ease',
-                                    border: searchOpen ? `1px solid ${headerScrolled ? 'var(--border)' : 'rgba(250,250,238,0.4)'}` : '1px solid transparent'
+                                    display: 'flex', alignItems: 'center',
+                                    background: searchOpen ? 'var(--parchment-dk)' : 'transparent',
+                                    borderRadius: '4px',
+                                    padding: searchOpen ? '2px 2px 2px 1rem' : '0',
+                                    transition: 'all 0.35s ease',
+                                    border: searchOpen ? '1.5px solid var(--border)' : '1.5px solid transparent'
                                 }}>
                                     <input
-                                        type="text"
-                                        placeholder="Search..."
+                                        type="text" placeholder="Search harvest..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         onBlur={() => !searchQuery && setSearchOpen(false)}
                                         style={{
-                                            width: searchOpen ? '180px' : '0',
+                                            width: searchOpen ? '160px' : '0',
                                             opacity: searchOpen ? 1 : 0,
-                                            transition: 'all 0.4s ease',
-                                            border: 'none',
-                                            background: 'transparent',
-                                            fontSize: '0.85rem',
-                                            outline: 'none',
-                                            color: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                                            fontWeight: '600'
+                                            transition: 'all 0.35s ease',
+                                            border: 'none', background: 'transparent',
+                                            fontSize: '0.85rem', outline: 'none',
+                                            color: 'var(--soil)', fontFamily: "'Lora', serif"
                                         }}
                                     />
-                                    <button
-                                        type="button"
+                                    <button type="button"
                                         onClick={() => {
                                             if (searchOpen && searchQuery.trim()) {
                                                 navigate(`/marketplace?keyword=${searchQuery}`);
                                                 setSearchOpen(false);
-                                            } else {
-                                                setSearchOpen(!searchOpen);
-                                            }
+                                            } else { setSearchOpen(!searchOpen); }
                                         }}
                                         style={{
-                                            background: searchOpen ? (headerScrolled ? 'var(--primary)' : 'var(--creamy)') : 'transparent',
-                                            border: 'none',
-                                            color: searchOpen ? (headerScrolled ? 'white' : 'var(--primary)') : (headerScrolled ? 'var(--primary)' : 'var(--creamy)'),
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            padding: '0.6rem',
-                                            borderRadius: '50%',
-                                            transition: 'var(--transition)'
+                                            background: 'transparent', border: 'none',
+                                            color: 'var(--soil)', cursor: 'pointer',
+                                            display: 'flex', padding: '0.5rem', transition: 'color 0.3s ease'
                                         }}
                                     >
-                                        <Search size={18} />
+                                        <Search size={18} strokeWidth={2} />
                                     </button>
                                 </div>
                             </form>
 
                             {user?.role === 'customer' && (
-                                <Link to="/cart" style={{ position: 'relative', color: headerScrolled ? 'var(--primary)' : 'var(--creamy)', transition: 'var(--transition)' }}>
-                                    <ShoppingBag size={22} />
+                                <Link to="/cart" style={{ position: 'relative', color: 'var(--soil)', display: 'flex' }}>
+                                    <ShoppingBag size={22} strokeWidth={2} />
                                     {cart.length > 0 && (
                                         <span style={{
-                                            position: 'absolute', top: '-10px', right: '-10px',
-                                            background: 'var(--primary-light)', color: 'white',
-                                            fontSize: '0.65rem', width: '18px', height: '18px',
+                                            position: 'absolute', top: '-8px', right: '-8px',
+                                            background: 'var(--rust)', color: 'white',
+                                            fontSize: '0.6rem', width: '17px', height: '17px',
                                             borderRadius: '50%', display: 'flex', alignItems: 'center',
-                                            justifyContent: 'center', fontWeight: '900',
-                                            boxShadow: '0 4px 10px rgba(106, 156, 137, 0.4)',
-                                            border: '2px solid var(--bg-main)'
+                                            justifyContent: 'center', fontWeight: '700',
+                                            border: '2px solid var(--parchment)'
                                         }}>{cart.length}</span>
                                     )}
                                 </Link>
@@ -271,47 +234,130 @@ const AppContent = () => {
                         </div>
 
                         {user ? (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+                            <div className="desktop-user-details" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                    <span style={{ fontSize: '0.95rem', fontWeight: '800', color: headerScrolled ? 'var(--primary)' : 'var(--creamy)', letterSpacing: '-0.01em' }}>{user.name}</span>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: user.role === 'farmer' ? '#10b981' : '#3b82f6' }} />
-                                        <span style={{ fontSize: '0.65rem', color: headerScrolled ? 'var(--text-muted)' : 'rgba(250, 250, 238, 0.6)', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '800' }}>{user.role}</span>
+                                    <span style={{
+                                        fontSize: '0.88rem', fontWeight: '600',
+                                        color: 'var(--soil)', fontFamily: "'Lora', serif"
+                                    }}>{user.name}</span>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: user.role === 'farmer' ? 'var(--sage)' : 'var(--rust)' }} />
+                                        <span style={{
+                                            fontSize: '0.6rem', color: 'var(--text-muted)',
+                                            textTransform: 'uppercase', letterSpacing: '0.15em',
+                                            fontFamily: "'Outfit', sans-serif", fontWeight: '700'
+                                        }}>{user.role}</span>
                                     </div>
                                 </div>
-                                <button onClick={handleLogout} className="btn-outline" style={{
-                                    padding: '0.6rem',
-                                    borderRadius: '14px',
-                                    border: `1.5px solid ${headerScrolled ? 'var(--border)' : 'rgba(250, 250, 238, 0.3)'}`,
-                                    background: headerScrolled ? 'white' : 'transparent',
-                                    color: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    transition: 'var(--transition)'
-                                }}>
-                                    <LogOut size={18} />
+                                <button onClick={handleLogout} style={{
+                                    padding: '0.5rem',
+                                    border: '1.5px solid var(--border)',
+                                    borderRadius: '6px',
+                                    background: 'transparent',
+                                    color: 'var(--soil)',
+                                    display: 'flex', alignItems: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'var(--transition)',
+                                    boxShadow: '2px 2px 0px var(--border)'
+                                }}
+                                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--soil)'; e.currentTarget.style.color = 'var(--parchment)'; }}
+                                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--soil)'; }}
+                                >
+                                    <LogOut size={17} strokeWidth={2} />
                                 </button>
                             </div>
                         ) : (
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                <Link to="/login" className="btn-outline" style={{
-                                    padding: '0.7rem 1.5rem',
-                                    fontSize: '0.85rem',
-                                    background: 'transparent',
-                                    color: headerScrolled ? 'var(--primary)' : 'var(--creamy)',
-                                    borderColor: headerScrolled ? 'var(--border)' : 'rgba(250, 250, 238, 0.4)',
-                                    fontWeight: '800'
-                                }}>Member Login</Link>
-                                <Link to="/register" className="btn btn-primary" style={{
-                                    padding: '0.7rem 1.5rem',
-                                    fontSize: '0.85rem',
-                                    boxShadow: '0 4px 15px rgba(22, 66, 60, 0.2)'
-                                }}>Registry Access</Link>
+                            <div className="desktop-user-details" style={{ display: 'flex', gap: '0.6rem' }}>
+                                <Link to="/login" className="btn btn-outline" style={{ padding: '0.55rem 1.2rem', fontSize: '0.8rem' }}>Sign In</Link>
+                                <Link to="/register" className="btn btn-primary" style={{ padding: '0.55rem 1.2rem', fontSize: '0.8rem' }}>Join Estate</Link>
+                            </div>
+                        )}
+
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="mobile-menu-btn"
+                            style={{
+                                background: 'transparent', border: 'none', color: 'var(--soil)',
+                                cursor: 'pointer', display: 'none', alignItems: 'center', justifyContent: 'center',
+                                padding: '0.5rem'
+                            }}
+                        >
+                            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+                        </button>
+                    </div>
+                </nav>
+
+                {/* Mobile Nav Drawer */}
+                {menuOpen && (
+                    <div style={{
+                        position: 'fixed', top: '70px', left: 0, right: 0,
+                        background: 'var(--glass)', borderBottom: '2.5px solid var(--border)',
+                        boxShadow: '0 8px 30px rgba(61,43,31,0.1)',
+                        backdropFilter: 'blur(16px)', zIndex: 999,
+                        display: 'flex', flexDirection: 'column', gap: '1.25rem',
+                        padding: '2rem 1.5rem', animation: 'dustFadeIn 0.3s ease-out'
+                    }}>
+                        {navItems.map(item => (
+                            <Link 
+                                key={item.path} 
+                                to={item.path} 
+                                onClick={() => setMenuOpen(false)}
+                                style={{ 
+                                    fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem',
+                                    fontWeight: '700', letterSpacing: '0.12em',
+                                    textTransform: 'uppercase', color: 'var(--soil)',
+                                    borderBottom: '1px solid rgba(197, 180, 154, 0.3)',
+                                    paddingBottom: '0.5rem'
+                                }}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        {user ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
+                                <span style={{ fontFamily: "'Lora', serif", fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-muted)' }}>Logged in as: {user.name} ({user.role})</span>
+                                <button 
+                                    onClick={() => { setMenuOpen(false); handleLogout(); }}
+                                    style={{ 
+                                        alignSelf: 'flex-start',
+                                        fontFamily: "'Outfit', sans-serif", fontSize: '0.85rem',
+                                        fontWeight: '700', textTransform: 'uppercase',
+                                        color: 'var(--rust)', background: 'transparent',
+                                        border: 'none', cursor: 'pointer', padding: '0.5rem 0'
+                                    }}
+                                >
+                                    Log Out
+                                </button>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+                                <Link 
+                                    to="/login" 
+                                    onClick={() => setMenuOpen(false)}
+                                    style={{ 
+                                        fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem',
+                                        fontWeight: '700', letterSpacing: '0.12em',
+                                        textTransform: 'uppercase', color: 'var(--rust)'
+                                    }}
+                                >
+                                    Sign In
+                                </Link>
+                                <Link 
+                                    to="/register" 
+                                    onClick={() => setMenuOpen(false)}
+                                    style={{ 
+                                        fontFamily: "'Outfit', sans-serif", fontSize: '0.95rem',
+                                        fontWeight: '700', letterSpacing: '0.12em',
+                                        textTransform: 'uppercase', color: 'var(--soil)'
+                                    }}
+                                >
+                                    Join Estate
+                                </Link>
                             </div>
                         )}
                     </div>
-                </nav>
+                )}
             </header>
 
             <main style={{ flexGrow: 1, marginTop: 0 }}>
@@ -349,55 +395,86 @@ const AppContent = () => {
                 </Routes>
             </main>
 
-            <footer style={{ background: 'var(--primary)', color: 'var(--creamy)', padding: '6rem 0 3rem 0' }}>
+            <footer style={{ background: 'var(--soil)', color: 'var(--parchment)', padding: '5rem 0 2.5rem 0', borderTop: '3px solid var(--border-dk)', backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-wood.png")', backgroundBlendMode: 'multiply' }}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr 0.8fr 1.2fr', gap: '4rem', marginBottom: '5rem' }}>
-                        <div className="reveal">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-                                <div style={{ background: 'var(--creamy)', padding: '0.5rem', borderRadius: '10px' }}>
-                                    <Leaf color="var(--primary)" size={20} />
+                    {/* Footer Brand */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 0.8fr 0.8fr 1.2fr', gap: '4rem', marginBottom: '4rem' }}>
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                                <div style={{ background: 'var(--parchment)', padding: '0.5rem', borderRadius: '4px', boxShadow: '2px 2px 0px var(--border-dk)' }}>
+                                    <Leaf color="var(--soil)" size={20} strokeWidth={2} />
                                 </div>
-                                <h3 style={{ color: 'var(--creamy)', fontSize: '1.8rem', letterSpacing: '-0.02em', margin: 0 }}>OneKart</h3>
+                                <span style={{ color: 'var(--parchment)', fontSize: '1.6rem', fontFamily: "'IM Fell English SC', Georgia, serif", letterSpacing: '0.02em' }}>OneKart</span>
                             </div>
-                            <p style={{ opacity: 0.7, lineHeight: '1.8', fontSize: '1.05rem', marginBottom: '2rem' }}>
-                                Connecting discerning collectors with the world's most exceptional, sustainable estate harvests.
+                            <p style={{ opacity: 0.75, lineHeight: '1.9', fontSize: '0.95rem', fontFamily: "'Lora', serif", fontStyle: 'italic', marginBottom: '1.5rem', maxWidth: '280px' }}>
+                                From the roots of the earth to your table — honest, traditional, nourishing.
                             </p>
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', opacity: 0.6 }}>
+                                <div style={{ width: '30px', height: '1px', background: 'var(--gold)' }} />
+                                <span style={{ fontSize: '0.7rem', fontFamily: "'Outfit', sans-serif", fontWeight: '600', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--gold-light)' }}>Est. 2025</span>
+                                <div style={{ width: '30px', height: '1px', background: 'var(--gold)' }} />
+                            </div>
                         </div>
-                        <div className="reveal" style={{ transitionDelay: '0.1s' }}>
-                            <h4 style={{ color: 'var(--creamy)', marginBottom: '2rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Collection</h4>
-                            <ul style={{ listStyle: 'none', display: 'grid', gap: '1.2rem', opacity: 0.8 }}>
-                                <li><Link to="/marketplace" className="nav-link">Private Reserve</Link></li>
-                                <li><Link to="/marketplace" className="nav-link">Seasonal Harvest</Link></li>
-                                <li><Link to="/marketplace" className="nav-link">Estate Tools</Link></li>
+
+                        <div>
+                            <h4 style={{ color: 'var(--gold-light)', marginBottom: '1.5rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.25em', fontFamily: "'Outfit', sans-serif" }}>Harvest</h4>
+                            <ul style={{ listStyle: 'none', display: 'grid', gap: '1rem', opacity: 0.8 }}>
+                                {[['Marketplace', '/marketplace'], ['Organic Seeds', '/marketplace?category=Seeds'], ['Organic Tools', '/marketplace?category=Tools']].map(([name, path]) => (
+                                    <li key={name}><Link to={path} style={{ color: 'var(--parchment)', fontFamily: "'Lora', serif", fontSize: '0.92rem', opacity: 0.8, transition: 'opacity 0.2s' }}>{name}</Link></li>
+                                ))}
                             </ul>
                         </div>
-                        <div className="reveal" style={{ transitionDelay: '0.2s' }}>
-                            <h4 style={{ color: 'var(--creamy)', marginBottom: '2rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Company</h4>
-                            <ul style={{ listStyle: 'none', display: 'grid', gap: '1.2rem', opacity: 0.8 }}>
-                                <li><Link to="/" className="nav-link">Our Story</Link></li>
-                                <li><Link to="/" className="nav-link">Impact Report</Link></li>
-                                <li><Link to="/" className="nav-link">Contact</Link></li>
+
+                        <div>
+                            <h4 style={{ color: 'var(--gold-light)', marginBottom: '1.5rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.25em', fontFamily: "'Outfit', sans-serif" }}>Company</h4>
+                            <ul style={{ listStyle: 'none', display: 'grid', gap: '1rem', opacity: 0.8 }}>
+                                {[['Our Story', '/about'], ['Contact Us', '/about'], ['Join as Farmer', '/register']].map(([name, path]) => (
+                                    <li key={name}><Link to={path} style={{ color: 'var(--parchment)', fontFamily: "'Lora', serif", fontSize: '0.92rem', opacity: 0.8 }}>{name}</Link></li>
+                                ))}
                             </ul>
                         </div>
-                        <div className="reveal" style={{ transitionDelay: '0.3s' }}>
-                            <h4 style={{ color: 'var(--creamy)', marginBottom: '2rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Estate Newsletter</h4>
-                            <p style={{ opacity: 0.7, fontSize: '0.95rem', marginBottom: '1.5rem' }}>Join the registry for release updates.</p>
+
+                        <div>
+                            <h4 style={{ color: 'var(--gold-light)', marginBottom: '1.5rem', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.25em', fontFamily: "'Outfit', sans-serif" }}>Field Bulletin</h4>
+                            <p style={{ opacity: 0.7, fontSize: '0.9rem', marginBottom: '1.2rem', fontFamily: "'Lora', serif", fontStyle: 'italic' }}>Receive seasonal harvest updates from our estates.</p>
                             <div style={{ position: 'relative' }}>
-                                <input placeholder="estate@domain.com" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '100px', padding: '1rem 1.5rem', width: '100%' }} />
-                                <button style={{ position: 'absolute', right: '8px', top: '8px', bottom: '8px', background: 'var(--creamy)', color: 'var(--primary)', padding: '0 1.2rem', borderRadius: '100px', fontWeight: '700', fontSize: '0.8rem' }}>Join</button>
+                                <input
+                                    placeholder="your@email.com"
+                                    style={{
+                                        background: 'rgba(245, 239, 215, 0.08)',
+                                        border: '1.5px solid rgba(245, 239, 215, 0.25)',
+                                        color: 'var(--parchment)', borderRadius: '4px',
+                                        padding: '0.85rem 5rem 0.85rem 1.2rem',
+                                        width: '100%', fontFamily: "'Lora', serif",
+                                        fontSize: '0.88rem', outline: 'none'
+                                    }}
+                                />
+                                <button style={{
+                                    position: 'absolute', right: '6px', top: '6px', bottom: '6px',
+                                    background: 'var(--gold)', color: 'var(--soil)',
+                                    padding: '0 1rem', borderRadius: '3px',
+                                    fontFamily: "'Outfit', sans-serif", fontWeight: '700',
+                                    fontSize: '0.75rem', letterSpacing: '0.1em', cursor: 'pointer',
+                                    border: 'none', textTransform: 'uppercase'
+                                }}>Sow</button>
                             </div>
                         </div>
                     </div>
-                    <div style={{ paddingTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: 0.6, fontSize: '0.85rem' }}>
-                        <p>© 2026 OneKart Estate Commerce. All rights preserved.</p>
+
+                    {/* Aged Divider */}
+                    <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, rgba(245,239,215,0.2), transparent)', marginBottom: '2rem' }} />
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', opacity: 0.55, fontSize: '0.8rem', fontFamily: "'Outfit', sans-serif" }}>
+                        <p>© 2025 OneKart Organic Estate. All harvests reserved.</p>
                         <div style={{ display: 'flex', gap: '2rem' }}>
-                            <span>Privacy Protocol</span>
-                            <span>Terms of Service</span>
+                            <Link to="/about" style={{ color: 'var(--parchment)' }}>Privacy</Link>
+                            <Link to="/about" style={{ color: 'var(--parchment)' }}>Terms</Link>
                         </div>
                     </div>
                 </div>
             </footer>
             <Toaster position="bottom-right" />
+            <Chatbot />
         </div>
     );
 };

@@ -50,6 +50,14 @@ export const CartProvider = ({ children }) => {
         toast.success('Removed from cart');
     };
 
+    const updateQuantity = (id, newQty) => {
+        if (newQty < 1) {
+            removeFromCart(id);
+            return;
+        }
+        setCartItems(cartItems.map((x) => x._id === id ? { ...x, qty: newQty } : x));
+    };
+
     const clearCart = () => {
         setCartItems([]);
         if (user) {
@@ -58,7 +66,7 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, cartTotal }}>
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal }}>
             {children}
         </CartContext.Provider>
     );

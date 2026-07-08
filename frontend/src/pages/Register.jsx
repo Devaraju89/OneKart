@@ -1,7 +1,29 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { Mail, Lock, User as UserIcon, Phone, Briefcase, ShoppingBasket, ArrowRight, CheckCircle2, Clock } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Phone, ArrowRight, Leaf, Clock, Sprout, ShoppingBasket } from 'lucide-react';
+
+const inputStyle = {
+    width: '100%',
+    padding: '0.88rem 1rem 0.88rem 3rem',
+    borderRadius: '4px',
+    background: 'var(--parchment-dk)',
+    border: '1.5px solid var(--border)',
+    outline: 'none',
+    color: 'var(--soil)',
+    fontSize: '0.9rem',
+    fontFamily: "'Lora', serif",
+    boxShadow: '2px 2px 0px var(--border)',
+    transition: 'border-color 0.25s ease, box-shadow 0.25s ease'
+};
+const labelStyle = {
+    display: 'block',
+    fontFamily: "'Outfit', sans-serif",
+    fontSize: '0.65rem', fontWeight: '700',
+    textTransform: 'uppercase', letterSpacing: '0.2em',
+    color: 'var(--soil)', marginBottom: '0.5rem'
+};
+const iconStyle = { position: 'absolute', left: '0.9rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' };
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -15,42 +37,27 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    const focusStyle = (e) => { e.target.style.borderColor = 'var(--rust)'; e.target.style.boxShadow = '3px 3px 0px var(--border-dk)'; };
+    const blurStyle = (e) => { e.target.style.borderColor = 'var(--border)'; e.target.style.boxShadow = '2px 2px 0px var(--border)'; };
+
     const validateForm = () => {
-        if (name.trim().length < 3) {
-            setError('Name must be at least 3 characters long');
-            return false;
-        }
+        if (name.trim().length < 3) { setError('Name must be at least 3 characters long'); return false; }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            setError('Please enter a valid email address');
-            return false;
-        }
-        if (password.length < 6) {
-            setError('Password must be at least 6 characters long');
-            return false;
-        }
+        if (!emailRegex.test(email)) { setError('Please enter a valid email address'); return false; }
+        if (password.length < 6) { setError('Password must be at least 6 characters long'); return false; }
         const mobileRegex = /^[0-9]{10}$/;
-        if (!mobileRegex.test(mobile)) {
-            setError('Mobile number must be exactly 10 digits');
-            return false;
-        }
+        if (!mobileRegex.test(mobile)) { setError('Mobile number must be exactly 10 digits'); return false; }
         return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
         if (!validateForm()) return;
-
         setLoading(true);
         try {
             await register({ name, email, password, role, mobile });
-            if (role === 'farmer') {
-                setIsSuccess(true);
-            } else {
-                navigate('/');
-            }
+            if (role === 'farmer') { setIsSuccess(true); } else { navigate('/'); }
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
         } finally {
@@ -58,34 +65,31 @@ const Register = () => {
         }
     };
 
+    /* ── Farmer Success Screen ── */
     if (isSuccess) {
         return (
             <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundImage: 'linear-gradient(rgba(22, 66, 60, 0.8), rgba(22, 66, 60, 0.9)), url("https://images.unsplash.com/photo-1594488630128-44-6b0994fd747ef?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2000")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--soil)', backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-wood.png")', backgroundBlendMode: 'multiply',
+                padding: '4rem 1.5rem'
             }}>
                 <div style={{
-                    maxWidth: '400px',
-                    padding: '3rem 2rem',
-                    textAlign: 'center',
-                    borderRadius: '24px',
-                    background: 'rgba(250, 250, 238, 0.05)',
-                    backdropFilter: 'blur(15px)',
-                    border: '1px solid rgba(250, 250, 238, 0.1)'
+                    maxWidth: '440px', width: '100%', padding: '4rem 3rem', textAlign: 'center',
+                    background: 'var(--cream)', border: '2px solid var(--border)',
+                    borderRadius: '6px', boxShadow: '8px 8px 0px rgba(61,43,31,0.3)'
                 }}>
-                    <div style={{ width: '60px', height: '60px', background: 'rgba(106, 156, 137, 0.2)', color: 'var(--primary-light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-                        <Clock size={30} />
+                    <div style={{ width: '70px', height: '70px', background: 'var(--parchment-dk)', border: '1.5px solid var(--border)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: '3px 3px 0px var(--border)', color: 'var(--rust)' }}>
+                        <Clock size={34} strokeWidth={1.5} />
                     </div>
-                    <h2 style={{ color: 'var(--creamy)', fontSize: '2rem', marginBottom: '1rem', fontFamily: "'Playfair Display', serif" }}>Application Sent</h2>
-                    <p style={{ color: 'rgba(250, 250, 238, 0.7)', lineHeight: '1.6', marginBottom: '2rem', fontSize: '1rem' }}>
-                        Account created. <strong>Admin review pending</strong> for Estate Owners.
+                    <h2 style={{ fontSize: '2.2rem', fontFamily: "'IM Fell English SC', Georgia, serif", color: 'var(--soil)', marginBottom: '1rem', fontWeight: '400' }}>
+                        Application Sent
+                    </h2>
+                    <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: '1.75', marginBottom: '2.5rem', fontSize: '1rem' }}>
+                        Your farmer account has been created. An admin will review and approve your estate access within 24 hours.
                     </p>
-                    <Link to="/login" className="btn btn-primary" style={{ padding: '0.8rem 2rem', background: 'var(--primary-light)', fontSize: '0.9rem' }}>Go to Login</Link>
+                    <Link to="/login" className="btn btn-primary" style={{ padding: '0.9rem 2.5rem' }}>
+                        Go to Sign In
+                    </Link>
                 </div>
             </div>
         );
@@ -94,132 +98,138 @@ const Register = () => {
     return (
         <div style={{
             minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundImage: 'linear-gradient(rgba(22, 66, 60, 0.85), rgba(22, 66, 60, 0.95)), url("https://images.unsplash.com/photo-1523348830342-d01f9ec9d23f?ixlib=rb-4.0.3&auto=format&fit=crop&q=80&w=2000")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            padding: '6rem 1.5rem 2rem'
+            background: 'var(--parchment)',
+            backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper.png")',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '6rem 1.5rem 3rem'
         }}>
-            <div style={{
-                width: '100%',
-                maxWidth: '480px',
-                padding: '3rem 2.5rem',
-                borderRadius: '24px',
-                background: 'rgba(250, 250, 238, 0.05)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(250, 250, 238, 0.1)',
-                boxShadow: '0 40px 100px rgba(0,0,0,0.4)'
-            }}>
-                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                    <h3 style={{ fontSize: '2.2rem', marginBottom: '0.5rem', color: 'var(--creamy)', fontWeight: '800', fontFamily: "'Playfair Display', serif" }}>Create Account</h3>
-                    <p style={{ color: 'rgba(250,250,238,0.5)', fontSize: '0.95rem' }}>Join our sustainable community</p>
+            <div style={{ width: '100%', maxWidth: '520px' }}>
+
+                {/* Logo */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', marginBottom: '3rem' }}>
+                    <div style={{ background: 'var(--soil)', padding: '0.5rem', borderRadius: '5px', display: 'flex', boxShadow: '3px 3px 0px var(--soil-light)' }}>
+                        <Leaf color="var(--parchment)" size={20} strokeWidth={2} />
+                    </div>
+                    <div>
+                        <span style={{ display: 'block', fontFamily: "'IM Fell English SC', Georgia, serif", fontSize: '1.5rem', color: 'var(--soil)', lineHeight: '1' }}>OneKart</span>
+                        <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.55rem', fontWeight: '700', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--rust)' }}>Organic Estate</span>
+                    </div>
                 </div>
 
-                {error && (
-                    <div style={{ padding: '1rem', background: 'rgba(220, 38, 38, 0.1)', color: '#fca5a5', borderRadius: '12px', marginBottom: '1.5rem', fontSize: '0.9rem', border: '1px solid rgba(220, 38, 38, 0.2)', textAlign: 'center' }}>
-                        {error}
+                {/* Heading */}
+                <h1 style={{ fontSize: '2.4rem', fontFamily: "'IM Fell English SC', Georgia, serif", color: 'var(--soil)', marginBottom: '0.5rem', fontWeight: '400' }}>
+                    Join the Estate
+                </h1>
+                <p style={{ color: 'var(--text-muted)', fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '1rem', marginBottom: '2rem' }}>
+                    Create your account to access farm-fresh produce.
+                </p>
+
+                <div style={{ height: '1.5px', background: 'linear-gradient(to right, var(--border-dk), transparent)', marginBottom: '2rem' }} />
+
+                {/* Role Selector */}
+                <div style={{ marginBottom: '2rem' }}>
+                    <label style={labelStyle}>I am a…</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        {[
+                            { val: 'customer', label: 'Customer', sub: 'Buy fresh produce', Icon: ShoppingBasket },
+                            { val: 'farmer', label: 'Farmer', sub: 'Sell my harvest', Icon: Sprout }
+                        ].map(({ val, label, sub, Icon }) => (
+                            <div key={val} onClick={() => setRole(val)} style={{
+                                padding: '1.2rem', cursor: 'pointer', textAlign: 'center',
+                                border: '2px solid ' + (role === val ? 'var(--rust)' : 'var(--border)'),
+                                borderRadius: '6px',
+                                background: role === val ? 'rgba(193,68,14,0.07)' : 'var(--cream)',
+                                boxShadow: role === val ? '4px 4px 0px rgba(193,68,14,0.2)' : '3px 3px 0px var(--border)',
+                                transition: 'all 0.25s ease'
+                            }}>
+                                <Icon size={24} color={role === val ? 'var(--rust)' : 'var(--text-muted)'} strokeWidth={1.5} style={{ marginBottom: '0.5rem' }} />
+                                <div style={{ fontFamily: "'Outfit', sans-serif", fontWeight: '700', fontSize: '0.88rem', color: role === val ? 'var(--rust)' : 'var(--soil)' }}>{label}</div>
+                                <div style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{sub}</div>
+                            </div>
+                        ))}
                     </div>
+                </div>
+
+                {/* Error */}
+                {error && (
+                    <div style={{
+                        padding: '1rem 1.2rem', marginBottom: '1.5rem',
+                        background: 'rgba(193,68,14,0.08)', border: '1.5px solid rgba(193,68,14,0.3)',
+                        borderLeft: '4px solid var(--rust)', borderRadius: '4px',
+                        fontFamily: "'Lora', serif", fontSize: '0.9rem', color: 'var(--rust)'
+                    }}>{error}</div>
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    <div style={{ marginBottom: '1.25rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'rgba(250,250,238,0.7)', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Full Name</label>
-                        <input
-                            type="text"
-                            placeholder="John Doe"
-                            style={{ width: '100%', padding: '0.9rem 1.1rem', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(250,250,238,0.1)', outline: 'none', color: 'var(--creamy)', fontSize: '0.95rem' }}
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div style={{ marginBottom: '1.25rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'rgba(250,250,238,0.7)', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Email</label>
-                        <input
-                            type="email"
-                            placeholder="name@onekart.com"
-                            style={{ width: '100%', padding: '0.9rem 1.1rem', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(250,250,238,0.1)', outline: 'none', color: 'var(--creamy)', fontSize: '0.95rem' }}
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-                        <div>
-                            <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'rgba(250,250,238,0.7)', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Password</label>
-                            <input
-                                type="password"
-                                placeholder="••••••••"
-                                style={{ width: '100%', padding: '0.9rem 1.1rem', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(250,250,238,0.1)', outline: 'none', color: 'var(--creamy)', fontSize: '0.95rem' }}
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'rgba(250,250,238,0.7)', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Mobile</label>
-                            <input
-                                type="text"
-                                placeholder="9876543210"
-                                style={{ width: '100%', padding: '0.9rem 1.1rem', borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: '1.5px solid rgba(250,250,238,0.1)', outline: 'none', color: 'var(--creamy)', fontSize: '0.95rem' }}
-                                value={mobile}
-                                onChange={(e) => setMobile(e.target.value)}
-                                required
-                            />
+                    {/* Name */}
+                    <div style={{ marginBottom: '1.2rem' }}>
+                        <label style={labelStyle}>Full Name</label>
+                        <div style={{ position: 'relative' }}>
+                            <UserIcon size={16} strokeWidth={2} style={iconStyle} />
+                            <input type="text" placeholder="Raju Gowda" style={inputStyle} value={name}
+                                onChange={e => setName(e.target.value)} onFocus={focusStyle} onBlur={blurStyle} required />
                         </div>
                     </div>
 
-                    <div style={{ marginBottom: '2.5rem' }}>
-                        <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'rgba(250,250,238,0.7)', textTransform: 'uppercase', marginBottom: '1rem', display: 'block', letterSpacing: '0.05em', textAlign: 'center' }}>Account Type</label>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                            <div
-                                onClick={() => setRole('customer')}
-                                style={{
-                                    padding: '1rem', borderRadius: '16px', border: '1.5px solid',
-                                    borderColor: role === 'customer' ? 'var(--primary-light)' : 'rgba(250,250,238,0.1)',
-                                    background: role === 'customer' ? 'rgba(106, 156, 137, 0.15)' : 'transparent',
-                                    cursor: 'pointer', textAlign: 'center', transition: 'var(--transition)'
-                                }}
-                            >
-                                <span style={{ fontSize: '0.9rem', fontWeight: '700', color: 'var(--creamy)' }}>Customer</span>
+                    {/* Email */}
+                    <div style={{ marginBottom: '1.2rem' }}>
+                        <label style={labelStyle}>Email Address</label>
+                        <div style={{ position: 'relative' }}>
+                            <Mail size={16} strokeWidth={2} style={iconStyle} />
+                            <input type="email" placeholder="your@email.com" style={inputStyle} value={email}
+                                onChange={e => setEmail(e.target.value)} onFocus={focusStyle} onBlur={blurStyle} required />
+                        </div>
+                    </div>
+
+                    {/* Password + Mobile */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.2rem' }}>
+                        <div>
+                            <label style={labelStyle}>Password</label>
+                            <div style={{ position: 'relative' }}>
+                                <Lock size={16} strokeWidth={2} style={iconStyle} />
+                                <input type="password" placeholder="••••••••"
+                                    style={{ ...inputStyle, padding: '0.88rem 1rem 0.88rem 3rem' }}
+                                    value={password} onChange={e => setPassword(e.target.value)}
+                                    onFocus={focusStyle} onBlur={blurStyle} required />
                             </div>
-                            <div
-                                onClick={() => setRole('farmer')}
-                                style={{
-                                    padding: '1rem', borderRadius: '16px', border: '1.5px solid',
-                                    borderColor: role === 'farmer' ? 'var(--primary-light)' : 'rgba(250,250,238,0.1)',
-                                    background: role === 'farmer' ? 'rgba(106, 156, 137, 0.15)' : 'transparent',
-                                    cursor: 'pointer', textAlign: 'center', transition: 'var(--transition)'
-                                }}
-                            >
-                                <span style={{ fontSize: '0.9rem', fontWeight: '700', color: 'var(--creamy)' }}>Estate Owner</span>
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Mobile</label>
+                            <div style={{ position: 'relative' }}>
+                                <Phone size={16} strokeWidth={2} style={iconStyle} />
+                                <input type="text" placeholder="9876543210"
+                                    style={{ ...inputStyle, padding: '0.88rem 1rem 0.88rem 3rem' }}
+                                    value={mobile} onChange={e => setMobile(e.target.value)}
+                                    onFocus={focusStyle} onBlur={blurStyle} required />
                             </div>
                         </div>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="btn btn-primary"
-                        style={{ width: '100%', padding: '1rem', marginBottom: '2rem', fontSize: '1rem', background: 'var(--primary-light)', color: 'white' }}
-                        disabled={loading}
-                    >
-                        {loading ? 'Creating...' : 'Register Now'}
+                    {/* Farmer Notice */}
+                    {role === 'farmer' && (
+                        <div style={{
+                            marginBottom: '1.5rem', padding: '1rem 1.2rem',
+                            background: 'rgba(200,147,26,0.1)', border: '1.5px solid rgba(200,147,26,0.4)',
+                            borderLeft: '4px solid var(--gold)', borderRadius: '4px'
+                        }}>
+                            <p style={{ fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '0.85rem', color: 'var(--soil)', lineHeight: '1.6' }}>
+                                🌾 Farmer accounts require admin approval. You'll be able to list products once your estate is verified.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Submit */}
+                    <button type="submit" disabled={loading} className="btn btn-primary"
+                        style={{ width: '100%', padding: '1rem', fontSize: '0.9rem', marginBottom: '1.5rem', justifyContent: 'center' }}>
+                        {loading ? 'Creating Account...' : (
+                            <><span>{role === 'farmer' ? 'Apply as Farmer' : 'Create Account'}</span><ArrowRight size={18} /></>
+                        )}
                     </button>
 
-                    <div style={{ textAlign: 'center', fontSize: '0.9rem' }}>
-                        <span style={{ color: 'rgba(250,250,238,0.5)' }}>Already have an account? </span>
-                        <Link to="/login" style={{ fontWeight: '700', color: 'var(--creamy)' }}>Sign In</Link>
-                    </div>
-
-                    <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px dashed rgba(250,250,238,0.1)', textAlign: 'center' }}>
-                        <p style={{ fontSize: '0.85rem', color: 'rgba(250, 250, 238, 0.4)', fontStyle: 'italic', lineHeight: '1.6' }}>
-                            "Skip the supermarket. Meet the farmer. <br /> Real food, fair prices, zero nonsense."
-                        </p>
-                    </div>
+                    <p style={{ textAlign: 'center', fontFamily: "'Lora', serif", fontSize: '0.92rem', color: 'var(--text-muted)' }}>
+                        Already on the estate?{' '}
+                        <Link to="/login" style={{ color: 'var(--rust)', fontWeight: '600', fontStyle: 'italic' }}>Sign in</Link>
+                    </p>
                 </form>
             </div>
         </div>
