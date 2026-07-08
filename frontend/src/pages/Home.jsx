@@ -70,7 +70,7 @@ const Home = () => {
                 const j = Math.floor(Math.random() * (i + 1));
                 [pool[i], pool[j]] = [pool[j], pool[i]];
             }
-            setProducts(pool.slice(0, 6));
+            setProducts(pool.slice(0, 12));
         } catch {
             setProducts([]);
         } finally {
