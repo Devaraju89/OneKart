@@ -176,13 +176,31 @@ const MyOrders = () => {
                                                 {order.status === 'Cancelled' ? 'View Details' : 'Real-time Track'}
                                             </Link>
                                             {order.status === 'Delivered' && (
-                                                <Link
-                                                    to={`/product/${order.orderItems[0].product || order.orderItems[0]._id}`}
-                                                    className="btn btn-outline"
-                                                    style={{ padding: '0.8rem 1.5rem', borderRadius: '1rem', fontSize: '0.85rem', color: 'var(--primary)', borderColor: 'var(--primary)', fontWeight: '700' }}
-                                                >
-                                                    Leave Feedback
-                                                </Link>
+                                                order.isReviewed ? (
+                                                    <span
+                                                        className="btn btn-outline"
+                                                        style={{
+                                                            padding: '0.8rem 1.5rem',
+                                                            borderRadius: '1rem',
+                                                            fontSize: '0.85rem',
+                                                            color: 'var(--text-muted)',
+                                                            borderColor: 'var(--border)',
+                                                            fontWeight: '700',
+                                                            cursor: 'not-allowed',
+                                                            background: '#f1f5f9'
+                                                        }}
+                                                    >
+                                                        Feedback Submitted
+                                                    </span>
+                                                ) : (
+                                                    <Link
+                                                        to={`/product/${order.orderItems[0].product || order.orderItems[0]._id}`}
+                                                        className="btn btn-outline"
+                                                        style={{ padding: '0.8rem 1.5rem', borderRadius: '1rem', fontSize: '0.85rem', color: 'var(--primary)', borderColor: 'var(--primary)', fontWeight: '700' }}
+                                                    >
+                                                        Leave Feedback
+                                                    </Link>
+                                                )
                                             )}
                                         </div>
                                     </div>

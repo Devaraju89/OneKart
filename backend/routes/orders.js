@@ -46,8 +46,29 @@ router.get('/myorders', protect, async (req, res) => {
         const orders = await Order.find({ user: req.user.id })
             .populate('orderItems.seller', 'name email')
             .sort({ createdAt: -1 });
-        res.status(200).json({ status: 'success', data: orders });
+
+        const Product = require('../models/Product');
+        const reviewedProducts = await Product.find({ 'reviews.user': req.user._id }, '_id');
+        const reviewedProductIds = new Set(reviewedProducts.map(p => p._id.toString()));
+
+        const modifiedOrders = orders.map(order => {
+            const orderObj = order.toObject();
+            if (orderObj.orderItems && orderObj.orderItems.length > 0) {
+                const firstProduct = orderObj.orderItems[0].product;
+                if (firstProduct) {
+                    orderObj.isReviewed = reviewedProductIds.has(firstProduct.toString());
+                } else {
+                    orderObj.isReviewed = false;
+                }
+            } else {
+                orderObj.isReviewed = false;
+            }
+            return orderObj;
+        });
+
+        res.status(200).json({ status: 'success', data: modifiedOrders });
     } catch (err) {
+        console.error("MYORDERS FETCH ERROR:", err);
         res.status(500).json({ status: 'error', message: 'Server error' });
     }
 });
