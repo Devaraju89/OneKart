@@ -313,7 +313,7 @@ const Home = () => {
                             <div className="loader" />
                         </div>
                     ) : (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
                             {products.map((p, i) => (
                                 <div key={p._id} className="reveal-up active glass-card" style={{
                                     transitionDelay: `${i * 0.08}s`,
@@ -322,7 +322,7 @@ const Home = () => {
                                 }}>
                                     {/* Image */}
                                     <Link to={`/product/${p._id}`} style={{
-                                        display: 'block', height: '240px',
+                                        display: 'block', height: '170px',
                                         overflow: 'hidden', position: 'relative'
                                     }}>
                                         <img
@@ -339,15 +339,15 @@ const Home = () => {
                                         />
                                         {/* Organic Stamp */}
                                         <div style={{
-                                            position: 'absolute', top: '12px', left: '12px',
-                                            padding: '0.2rem 0.7rem',
-                                            border: '1.5px solid rgba(245,239,215,0.8)',
+                                            position: 'absolute', top: '10px', left: '10px',
+                                            padding: '0.15rem 0.5rem',
+                                            border: '1px solid rgba(245,239,215,0.8)',
                                             background: 'rgba(61,43,31,0.65)',
                                             borderRadius: '2px', backdropFilter: 'blur(4px)'
                                         }}>
                                             <span style={{
-                                                fontFamily: "'Outfit', sans-serif", fontSize: '0.6rem',
-                                                fontWeight: '700', letterSpacing: '0.15em',
+                                                fontFamily: "'Outfit', sans-serif", fontSize: '0.55rem',
+                                                fontWeight: '700', letterSpacing: '0.12em',
                                                 textTransform: 'uppercase', color: 'var(--parchment)'
                                             }}>
                                                 {p.category || 'Organic'}
@@ -356,17 +356,17 @@ const Home = () => {
                                     </Link>
 
                                     {/* Info */}
-                                    <div style={{ padding: '1.4rem 1.6rem 1.6rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div style={{ padding: '1rem 1.1rem 1.1rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                                         {/* Stars */}
-                                        <div style={{ display: 'flex', gap: '2px', marginBottom: '0.6rem' }}>
-                                            {[1,2,3,4,5].map(s => <Star key={s} size={11} fill="var(--gold)" color="var(--gold)" />)}
+                                        <div style={{ display: 'flex', gap: '2px', marginBottom: '0.5rem' }}>
+                                            {[1,2,3,4,5].map(s => <Star key={s} size={9} fill="var(--gold)" color="var(--gold)" />)}
                                         </div>
 
                                         <Link to={`/product/${p._id}`}>
                                             <h3 style={{
-                                                fontSize: '1.25rem',
+                                                fontSize: '1.05rem',
                                                 fontFamily: "'IM Fell English SC', Georgia, serif",
-                                                color: 'var(--soil)', marginBottom: '0.4rem',
+                                                color: 'var(--soil)', marginBottom: '0.3rem',
                                                 transition: 'color 0.3s ease',
                                                 lineHeight: '1.3'
                                             }}
@@ -377,11 +377,18 @@ const Home = () => {
                                             </h3>
                                         </Link>
 
+                                        {/* Farmer / Farm name in thick green color */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.6rem' }}>
+                                            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: '600' }}>
+                                                Farm: <span style={{ color: '#2e7d32', fontWeight: '800' }}>{p.seller?.name || 'Estate Direct'}</span>
+                                            </span>
+                                        </div>
+
                                         {p.description && (
                                             <p style={{
-                                                fontFamily: "'Lora', serif", fontSize: '0.88rem',
+                                                fontFamily: "'Lora', serif", fontSize: '0.78rem',
                                                 color: 'var(--text-muted)', fontStyle: 'italic',
-                                                lineHeight: '1.6', marginBottom: '1rem',
+                                                lineHeight: '1.5', marginBottom: '0.8rem',
                                                 display: '-webkit-box', WebkitLineClamp: 2,
                                                 WebkitBoxOrient: 'vertical', overflow: 'hidden'
                                             }}>
@@ -389,16 +396,16 @@ const Home = () => {
                                             </p>
                                         )}
 
-                                        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1.2rem', borderTop: '1px solid var(--border)' }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.8rem', borderTop: '1px solid var(--border)' }}>
                                             <div>
                                                 <span style={{
                                                     display: 'block', fontFamily: "'Outfit', sans-serif",
-                                                    fontSize: '0.6rem', fontWeight: '700',
-                                                    textTransform: 'uppercase', letterSpacing: '0.12em',
-                                                    color: 'var(--text-muted)', marginBottom: '0.2rem'
+                                                    fontSize: '0.55rem', fontWeight: '700',
+                                                    textTransform: 'uppercase', letterSpacing: '0.1em',
+                                                    color: 'var(--text-muted)', marginBottom: '0.1rem'
                                                 }}>Price / {p.unit || 'kg'}</span>
                                                 <span style={{
-                                                    fontSize: '1.8rem', fontWeight: '700',
+                                                    fontSize: '1.45rem', fontWeight: '700',
                                                     color: 'var(--soil)',
                                                     fontFamily: "'IM Fell English SC', serif",
                                                     letterSpacing: '-0.01em'
@@ -410,7 +417,7 @@ const Home = () => {
                                                     onClick={() => addToCart(p)}
                                                     disabled={p.quantity <= 0}
                                                     style={{
-                                                        width: '48px', height: '48px',
+                                                        width: '38px', height: '38px',
                                                         borderRadius: '4px',
                                                         background: p.quantity <= 0 ? 'var(--border)' : 'var(--soil)',
                                                         color: p.quantity <= 0 ? 'var(--text-muted)' : 'var(--parchment)',
@@ -418,12 +425,12 @@ const Home = () => {
                                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                         cursor: p.quantity <= 0 ? 'not-allowed' : 'pointer',
                                                         transition: 'all 0.3s ease',
-                                                        boxShadow: p.quantity <= 0 ? 'none' : '3px 3px 0px var(--soil-light)'
+                                                        boxShadow: p.quantity <= 0 ? 'none' : '2px 2px 0px var(--soil-light)'
                                                     }}
-                                                    onMouseEnter={e => { if (p.quantity > 0) { e.currentTarget.style.background = 'var(--rust)'; e.currentTarget.style.borderColor = 'var(--rust)'; e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '4px 4px 0px #8B2E08'; } }}
-                                                    onMouseLeave={e => { if (p.quantity > 0) { e.currentTarget.style.background = 'var(--soil)'; e.currentTarget.style.borderColor = 'var(--soil)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '3px 3px 0px var(--soil-light)'; } }}
+                                                    onMouseEnter={e => { if (p.quantity > 0) { e.currentTarget.style.background = 'var(--rust)'; e.currentTarget.style.borderColor = 'var(--rust)'; e.currentTarget.style.transform = 'translate(-1px,-1px)'; e.currentTarget.style.boxShadow = '3px 3px 0px #8B2E08'; } }}
+                                                    onMouseLeave={e => { if (p.quantity > 0) { e.currentTarget.style.background = 'var(--soil)'; e.currentTarget.style.borderColor = 'var(--soil)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '2px 2px 0px var(--soil-light)'; } }}
                                                 >
-                                                    <ShoppingBag size={20} strokeWidth={2} />
+                                                    <ShoppingBag size={16} strokeWidth={2} />
                                                 </button>
                                             )}
                                         </div>

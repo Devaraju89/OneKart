@@ -529,7 +529,7 @@ const GridCard = ({ p, i, addToCart, user }) => {
 
                 <div className="grid-card-seller" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.6rem' }}>
                     <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-                        Farm: <span style={{ color: 'var(--rust)' }}>{p.seller?.name || 'Estate Direct'}</span>
+                        Farm: <span style={{ color: '#2e7d32', fontWeight: '800' }}>{p.seller?.name || 'Estate Direct'}</span>
                     </span>
                 </div>
 
