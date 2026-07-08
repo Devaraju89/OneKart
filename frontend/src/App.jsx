@@ -28,7 +28,6 @@ import ManageUsers from './pages/admin/Users';
 import ManageRequests from './pages/admin/Requests';
 import ManageOrders from './pages/admin/ManageOrders';
 import ManageProducts from './pages/admin/ManageProducts';
-import Chatbot from './components/Chatbot';
 
 import AuthContext from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
@@ -474,7 +473,6 @@ const AppContent = () => {
                 </div>
             </footer>
             <Toaster position="bottom-right" />
-            <Chatbot />
         </div>
     );
 };
